@@ -22,6 +22,22 @@ const joystick = [
     document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button')
 ];
 
+function requestFullscreen() {
+    const element = document.documentElement;
+    
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+}
+
+document.addEventListener('gesturestart', (event) => {
+    event.preventDefault();
+});
+
 function generateMap() {
     requestAnimationFrame(() => {
         game.textContent = '';
@@ -150,27 +166,37 @@ document.body.onkeydown = (event) => {
 }
 
 joystick.forEach((element, index) => {
-    if (index == 0) {
-        element.onclick = () => {
+    element.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        
+        if (index == 0) {
             movePlayer(0);
-        }
-    } else if (index == 1) {
-        element.onclick = () => {
+        } else if (index == 1) {
             movePlayer(2);
-        }
-    } else if (index == 2) {
-        element.onclick = () => {
+        } else if (index == 2) {
             playerCapture();
-        }
-    } else if (index == 3) {
-        element.onclick = () => {
+        } else if (index == 3) {
             movePlayer(3);
-        }
-    } else if (index == 4) {
-        element.onclick = () => {
+        } else if (index == 4) {
             movePlayer(1);
         }
-    }
+    });
+
+    element.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (index == 0) {
+            movePlayer(0);
+        } else if (index == 1) {
+            movePlayer(2);
+        } else if (index == 2) {
+            playerCapture();
+        } else if (index == 3) {
+            movePlayer(3);
+        } else if (index == 4) {
+            movePlayer(1);
+        }
+    });
 });
 
 function centerOffset() {
@@ -191,6 +217,11 @@ function centerOffset() {
 }
 
 function main() {
+    document.body.addEventListener('click', function fullscreenHandler() {
+        requestFullscreen();
+        document.body.removeEventListener('click', fullscreenHandler);
+    }, { once: true });
+    
     generateMap();
     
     setTimeout(() => {
