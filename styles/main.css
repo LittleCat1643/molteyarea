@@ -125,3 +125,13 @@ body {
 .layout > .game > .field > .line > .cell > .count {
     color: #00000022;
 }
+
+.layout > .game > .field > .line > .flag {
+    transform: scale(1.1);
+    outline: solid 2px #00000022;
+}
+
+.layout > .game > .field > .line > .flag > .count {
+    font-weight: 700;
+    transform: scale(1.25);
+}

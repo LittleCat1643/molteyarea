@@ -1,13 +1,16 @@
-const colors = [['ff4d6d', 'ffb3c1']];
+const colors = [['ff4d6d', 'ffb3c1'], ['0582ca', '00a6fb'], ['2a9134', '5bba6f'], ['ffba08', 'ffe169'], ['7b2cbf', 'c77dff'], ['e85d04', 'faa307']];
+const radius = [[0, 0], [1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1], [0, -1], [1, -1], [-1, 1]];
 
 let width = 50;
 let height = 50;
 let strength = 50;
-let cellMax = 99;
+let players = []
 
-let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0, false]));
+const cellStandard = [strength, 0, false, false];
 
-let player = { id: 1, x: 25, y: 25, captured: [] }
+let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0, false, false]));
+
+let player = { id: 1, x: 25, y: 25, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
 let zoom = 4;
 
 const game = document.querySelector('.field');
@@ -23,15 +26,15 @@ const joystick = [
 ];
 
 function requestFullscreen() {
-    const element = document.documentElement;
+    // const element = document.documentElement;
     
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-    }
+    // if (element.requestFullscreen) {
+    //     element.requestFullscreen();
+    // } else if (element.webkitRequestFullscreen) {
+    //     element.webkitRequestFullscreen();
+    // } else if (element.msRequestFullscreen) {
+    //     element.msRequestFullscreen();
+    // }
 }
 
 document.addEventListener('gesturestart', (event) => {
@@ -54,6 +57,13 @@ function generateMap() {
                 square.dataset.y = y;
 
                 square.classList.add('cell');
+
+                if (player.x == x && player.y == y) {
+                    square.classList.add('captured');
+                    square.style.background = `#${colors[player.id - 1][1]}`;
+
+                    players.push(player);
+                }
 
                 countElement.classList.add('count');
                 countElement.textContent = map[y][x][0];
@@ -81,6 +91,26 @@ function generatePlayer() {
     cell.appendChild(playerElement);
 }
 
+function generateRadius() {
+    radius.forEach(element => {
+        map[player.y + element[1]][player.x + element[0]][0] = player.cellMin;
+
+        if (element[0] == 0 && element[1] == 0) {
+            map[player.y][player.x][3] == true;
+
+            generateFlag(player.x, player.y);
+        }
+
+        cellCapture(player.x + element[0], player.y + element[1]);
+        generateCount(player.x + element[0], player.y + element[1]);
+    });
+}
+
+function generateFlag(x, y) {
+    const cell = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+    cell.classList.add('flag');
+}
+
 function generateCount(x, y) {
     const cell = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
 
@@ -88,18 +118,110 @@ function generateCount(x, y) {
 
     const countElement = document.createElement('div');
     countElement.classList.add('count');
-    
-    if (player.captured.some(pos => pos[0] == x && pos[1] == y)) {
-        cell.classList.add('captured');
-        cell.style.background = `#${colors[player.id - 1][1]}`;
-    }
+
+    players.forEach(player => {
+        if (player.captured.some(pos => pos[0] == x && pos[1] == y)) {
+            cell.classList.add('captured');
+            cell.style.background = `#${colors[player.id - 1][1]}`;
+        }
+    });
 
     countElement.textContent = map[y][x][0];
     cell.appendChild(countElement);
 
-    if (x === player.x && y === player.y) {
+    if (x == player.x && y == player.y) {
         generatePlayer();
     }
+
+    players.forEach(player => {
+        if (x == player.x && y == player.y) {
+            if (player.id == 1) {
+                generatePlayer();
+            } else {
+                generateBot(player);
+            }
+        }
+    });
+}
+
+function findValidCells() {
+    const validCells = [];
+    
+    function isTargetValue(cell) {
+      return cell[0] === cellStandard[0] && cell[1] === cellStandard[1] && cell[2] === cellStandard[2] && cell[3] === cellStandard[3];
+    }
+
+    map.forEach((line, y) => {
+        line.forEach((cell, x) => {
+            let allNeighborsValid = true;
+
+            if (!isTargetValue(cell)) {
+                allNeighborsValid = false;
+            }
+
+            if (allNeighborsValid) {
+                radius.forEach(element => {
+                    if (element[0] != 0 && element[1] != 0) {
+                        const newPos = { x: x + element[0], y: y + element[0] }
+
+                        if (newPos.y >= 0 && newPos.y < height && newPos.x >= 0 && newPos.x < width) {
+                            if (!isTargetValue(map[newPos.y][newPos.x])) {
+                                allNeighborsValid = false;
+                            }
+                        } else {
+                            allNeighborsValid = false;
+                        }
+                    }
+                });
+            }
+              
+            if (allNeighborsValid) {
+                validCells.push({x, y});
+            }
+        });
+    });
+    
+    return validCells;
+}
+
+function createBot() {
+    const validCells = findValidCells();
+    const cell = validCells[Math.floor(Math.random() * validCells.length)];
+    
+    const bot = { id: players.length + 1, x: cell.x, y: cell.y, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
+
+    players.push(bot);
+
+    generateBot(bot);
+    generateBotRadius(bot);
+}
+
+function generateBot(bot) {
+    const cell = document.querySelector(`[data-x="${bot.x}"][data-y="${bot.y}"]`);
+
+    cell.innerHTML = '';
+
+    const botElement = document.createElement('div');
+
+    botElement.classList.add('player');
+    botElement.style.background = `#${colors[bot.id - 1][0]}`;
+
+    cell.appendChild(botElement);
+}
+
+function generateBotRadius(bot) {
+    radius.forEach(element => {
+        map[bot.y + element[1]][bot.x + element[0]][0] = bot.cellMin;
+
+        if (element[0] == 0 && element[1] == 0) {
+            map[bot.y][bot.x][3] == true;
+
+            generateFlag(bot.x, bot.y);
+        }
+
+        botCellCapture(bot, bot.x + element[0], bot.y + element[1]);
+        generateCount(bot.x + element[0], bot.y + element[1]);
+    });
 }
 
 function movePlayer(direction) {
@@ -127,7 +249,7 @@ function playerCapture() {
     } else if (!player.captured.some(pos => pos[0] == player.x && pos[1] == player.y)) {
         map[player.y][player.x][0] -= 1;
     } else {
-        if (map[player.y][player.x][0] < cellMax) {
+        if (map[player.y][player.x][0] < player.cellMax) {
             map[player.y][player.x][0] += 1;
         }
     }
@@ -139,15 +261,35 @@ function cellCapture(x, y) {
     player.captured.push([x, y]);
 }
 
+function botCellCapture(bot, x, y) {
+    bot.captured.push([x, y]);
+}
+
 function passiveCapture() {
     requestAnimationFrame(() => {
-        player.captured.forEach(pos => {
-            if (map[pos[1]][pos[0]][0] < cellMax) {
-                map[pos[1]][pos[0]][0] += 1;
-            }
+        setInterval(() => {
+            player.captured.forEach(pos => {
+                if (map[pos[1]][pos[0]][0] < player.cellMax) {
+                    map[pos[1]][pos[0]][0] += 1;
+                }
 
-            generateCount(pos[0], pos[1]);
-        });
+                generateCount(pos[0], pos[1]);
+            });
+        }, 1000);
+    });
+}
+
+function botPassiveCapture(bot) {
+    requestAnimationFrame(() => {
+        setInterval(() => {
+            bot.captured.forEach(pos => {
+                if (map[pos[1]][pos[0]][0] < bot.cellMax) {
+                    map[pos[1]][pos[0]][0] += 1;
+                }
+
+                generateCount(pos[0], pos[1]);
+            });
+        }, 1000);
     });
 }
 
@@ -226,12 +368,21 @@ function main() {
     
     setTimeout(() => {
         generatePlayer();
+        generateRadius();
         centerOffset();
-    }, 50);
 
-    setInterval(() => {
-        passiveCapture();
-    }, 1000);
+        for (let index = 0; index < colors.length - 1; index++) {
+            createBot();
+        }
+
+        players.forEach(player => {
+            if (player.id == 1) {
+                passiveCapture();
+            } else {
+                botPassiveCapture(player);
+            }
+        });
+    }, 50);
 }
 
 main();
