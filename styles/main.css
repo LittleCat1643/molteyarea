@@ -50,7 +50,37 @@ body {
 }
 
 .header > div > div {
-    pointer-events: auto;
+    padding: 6px;
+}
+
+.header > .top > .left > .leaderboard {
+    background: #000000;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.header > .top > .left > .leaderboard > .title {
+    margin-bottom: 4px;
+}
+
+.header > .top > .left > .leaderboard > .title > span {
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.header > .top > .left > .leaderboard > .content > span {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.header > .top > .left > .leaderboard > .content > span > span {
+    font-weight: 600;
+    margin-left: 10px;
 }
 
 .header > .bottom > .left > .joystick {
