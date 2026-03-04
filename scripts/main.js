@@ -13,12 +13,12 @@ const ruSecondUsernamesPart = ['Иванов', 'Смирнов', 'Кузнецо
 
 let width = 50;
 let height = 50;
-let strength = 50;
+let strength = 10;
 let players = []
 
-const cellStandard = [strength, 0];
+const cellStandard = [strength, 0, false];
 
-let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0]));
+let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0, false]));
 
 let player = { id: 1, nickname: 'Игрок', x: 25, y: 25, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
 let zoom = 3;
@@ -78,10 +78,6 @@ function generateMap() {
 
                 square.classList.add('cell');
 
-                if (player.x == x && player.y == y) {
-                    players.push(player);
-                }
-
                 countElement.classList.add('count');
                 countElement.textContent = map[y][x][0];
 
@@ -109,21 +105,30 @@ function generatePlayer() {
     playerElement.classList.add('player');
     playerElement.style.background = `#${colors[player.id - 1][0]}`;
 
+    const nicknameElement = document.createElement('span');
+
+    nicknameElement.textContent = player.nickname;
+
     cell.appendChild(playerElement);
+    cell.appendChild(nicknameElement);
 }
 
 function generateRadius() {
     radius.forEach(element => {
-        map[player.y + element[1]][player.x + element[0]][0] = player.cellMin;
+        const newX = player.x + element[0];
+        const newY = player.y + element[1];
 
-        if (element[0] == 0 && element[1] == 0) {
-            map[player.y][player.x][3] == true;
+        if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
+            map[newY][newX][0] = player.cellMin;
 
-            generateFlag(player.x, player.y);
+            if (element[0] == 0 && element[1] == 0) {
+                map[player.y][player.x][2] = true;
+                generateFlag(player.x, player.y);
+            }
+
+            cellCapture(newX, newY);
+            generateCount(newX, newY);
         }
-
-        cellCapture(player.x + element[0], player.y + element[1]);
-        generateCount(player.x + element[0], player.y + element[1]);
     });
 }
 
@@ -168,42 +173,60 @@ function generateCount(x, y) {
 function findValidCells() {
     const validCells = [];
     
-    function isTargetValue(cell) {
-        return cell[0] === cellStandard[0] && cell[1] === cellStandard[1];
+    function isStandardCell(cell) {
+        return cell && cell[0] === cellStandard[0] && cell[1] === cellStandard[1] && cell[2] === cellStandard[2];
     }
 
     map.forEach((line, y) => {
         line.forEach((cell, x) => {
-            let allNeighborsValid = true;
-
-            if (!isTargetValue(cell)) {
-                allNeighborsValid = false;
-            }
-
-            if (allNeighborsValid) {
-                radius.forEach(element => {
-                    if (element[0] != 0 && element[1] != 0) {
-                        const newPos = { x: x + element[0], y: y + element[0] }
-
-                        if (newPos.y >= 0 && newPos.y < height && newPos.x >= 0 && newPos.x < width) {
-                            players.forEach(player => {
-                                if (player.captured.some(pos => pos[0] == newPos.x && pos[1] == newPos.y)) {
-                                    allNeighborsValid = false;
-                                }
-                            });
-
-                            if (!isTargetValue(map[newPos.y][newPos.x])) {
-                                allNeighborsValid = false;
+            if (!(x < 1 || x >= width - 1 || y < 1 || y >= height - 1)) {
+                if (isStandardCell(cell) && checkPos(x, y)) {
+                    let allAreaFree = true;
+                    const futureArea = [];
+                    
+                    radius.forEach(element => {
+                        const newX = x + element[0];
+                        const newY = y + element[1];
+                        
+                        if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
+                            futureArea.push([newX, newY]);
+                            
+                            if (!isStandardCell(map[newY][newX])) {
+                                allAreaFree = false;
+                            }
+                            
+                            if (!checkPos(newX, newY)) {
+                                allAreaFree = false;
+                            }
+                            
+                            const isCaptured = players.some(player => 
+                                player.captured.some(pos => pos[0] == newX && pos[1] == newY)
+                            );
+                            
+                            if (isCaptured) {
+                                allAreaFree = false;
                             }
                         } else {
-                            allNeighborsValid = false;
+                            allAreaFree = false;
+                        }
+                    });
+                    
+                    if (allAreaFree) {
+                        const willBeOccupied = players.some(existingPlayer => {
+                            if (existingPlayer.id == 1) return false;
+                            
+                            return radius.some(element => {
+                                const otherX = existingPlayer.x + element[0];
+                                const otherY = existingPlayer.y + element[1];
+                                return otherX == x && otherY == y;
+                            });
+                        });
+                        
+                        if (!willBeOccupied) {
+                            validCells.push({x, y});
                         }
                     }
-                });
-            }
-              
-            if (allNeighborsValid) {
-                validCells.push({x, y});
+                }
             }
         });
     });
@@ -233,7 +256,12 @@ function generateBot(bot) {
     botElement.classList.add('player');
     botElement.style.background = `#${colors[bot.id - 1][0]}`;
 
+    const nicknameElement = document.createElement('span');
+
+    nicknameElement.textContent = bot.nickname;
+
     cell.appendChild(botElement);
+    cell.appendChild(nicknameElement);
 }
 
 function generateBotUsername() {
@@ -250,16 +278,20 @@ function generateBotUsername() {
 
 function generateBotRadius(bot) {
     radius.forEach(element => {
-        map[bot.y + element[1]][bot.x + element[0]][0] = bot.cellMin;
+        const newX = bot.x + element[0];
+        const newY = bot.y + element[1];
 
-        if (element[0] == 0 && element[1] == 0) {
-            map[bot.y][bot.x][3] == true;
+        if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
+            map[newY][newX][0] = bot.cellMin;
 
-            generateFlag(bot.x, bot.y);
+            if (element[0] == 0 && element[1] == 0) {
+                map[bot.y][bot.x][3] == true;
+                generateFlag(bot.x, bot.y);
+            }
+
+            botCellCapture(bot, newX, newY);
+            generateCount(newX, newY);
         }
-
-        botCellCapture(bot, bot.x + element[0], bot.y + element[1]);
-        generateCount(bot.x + element[0], bot.y + element[1]);
     });
 }
 
@@ -329,6 +361,27 @@ function playerCapture() {
     generateCount(player.x, player.y);
 }
 
+function botCapture(bot) {
+    // Проверяем, принадлежит ли текущая клетка этому боту
+    const isOwnedByThisBot = bot.captured.some(pos => pos[0] == bot.x && pos[1] == bot.y);
+    
+    // Если клетка уже принадлежит боту - ничего не делаем
+    if (isOwnedByThisBot) {
+        return;
+    }
+    
+    // Атакуем только текущую клетку, на которой стоит бот
+    if (map[bot.y][bot.x][0] <= 0) {
+        // Клетка готова к захвату
+        botCellCapture(bot, bot.x, bot.y);
+    } else {
+        // Уменьшаем значение клетки
+        map[bot.y][bot.x][0] -= 1;
+    }
+
+    generateCount(bot.x, bot.y);
+}
+
 function cellCapture(x, y) {
     let capturedByOther = false;
     let otherPlayer = null;
@@ -386,7 +439,11 @@ function botPassiveCapture(bot) {
 function botActive(bot) {
     requestAnimationFrame(() => {
         setInterval(() => {
-            moveBot(bot, Math.floor(Math.random() * 4))
+            moveBot(bot, Math.floor(Math.random() * 4));
+            
+            for (let index = 0; index < strength + 1; index++) {
+                botCapture(bot);
+            }
         }, 1000);
     });
 }
@@ -435,7 +492,30 @@ function generateMiniMap() {
 
             players.forEach(player => {
                 if (player.captured.some(pos => pos[0] == x && pos[1] == y)) {
-                    square.style.background = `#${colors[player.id - 1][0]}`;
+                    square.style.background = `#${colors[player.id - 1][1]}`;
+                }
+            });
+
+            players.forEach(player => {
+                if (player.x == x && player.y == y) {
+                    let counts = [];
+
+                    players.forEach(player => {
+                        let count = 0;
+
+                        player.captured.forEach(cell => {
+                            count += map[cell[1]][cell[0]][0]
+                        });
+
+                        counts.push([player.id, count]);
+                    });
+
+                    let count = counts.sort((a, b) => b[1] - a[1]).slice(0, 1)[0];
+
+                    if (players[count[0] - 1].x == x && players[count[0] - 1].y == y) {
+                        square.classList.add('player');
+                        square.innerHTML = '<i class="fi fi-sr-crown" style="font-size: 4px; position: relative; bottom: 11px; right: 1px; color: #e85d04;"></i>';
+                    }
                 }
             });
 
@@ -535,32 +615,44 @@ function main() {
     
     generateMap();
     
-    setTimeout(() => {
-        generatePlayer();
-        generateRadius();
-        centerOffset();
+    requestAnimationFrame(() => {
+        setTimeout(() => {
+            const validCells = findValidCells();
+            const cells = validCells[Math.floor(Math.random() * validCells.length)]
 
-        for (let index = 0; index < colors.length - 1; index++) {
-            createBot();
-        }
+            player.x = cells.x;
+            player.y = cells.y;
 
-        players.forEach(player => {
-            if (player.id == 1) {
-                passiveCapture();
-            } else {
-                botPassiveCapture(player);
-                botActive(player);
+            map[player.y][player.x][2] = true;
+
+            players.push(player);
+
+            generatePlayer();
+            generateRadius();
+            centerOffset();
+
+            for (let index = 0; index < colors.length - 1; index++) {
+                createBot();
             }
-        });
 
-        generateLeaderboard();
-        generateMiniMap();
+            players.forEach(player => {
+                if (player.id == 1) {
+                    passiveCapture();
+                } else {
+                    botPassiveCapture(player);
+                    botActive(player);
+                }
+            });
 
-        setInterval(() => {
             generateLeaderboard();
             generateMiniMap();
-        }, 2500);
-    }, 50);
+
+            setInterval(() => {
+                generateLeaderboard();
+                generateMiniMap();
+            }, 2500);
+        }, 50);
+    });
 }
 
 main();
