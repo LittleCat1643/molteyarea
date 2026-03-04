@@ -15,7 +15,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #000000;
+    background: #48cae4;
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -32,14 +32,14 @@ body {
 }
 
 .header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 999;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
     pointer-events: none;
 }
 
@@ -47,10 +47,19 @@ body {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    position: relative;
 }
 
 .header > div > div {
     padding: 6px;
+}
+
+.header > .top {
+    align-items: flex-start;
+}
+
+.header > .bottom {
+    align-items: flex-end;
 }
 
 .header > .top > .left > .leaderboard {
@@ -83,8 +92,51 @@ body {
     margin-left: 10px;
 }
 
+.header > .top > .right {
+    padding: 6px;
+    border-radius: 6px;
+    background: #000000;
+    margin: 6px;
+}
+
+.header > .top > .right > .map {
+    border-radius: 3px;
+}
+
+.header > .top > .right > .map > .line {
+    display: flex;
+}
+
+.header > .top > .right > .map > .line > .cell {
+    width: 2px;
+    height: 2px;
+}
+
+.header > .center {
+    height: 0%;
+}
+
+.header > .center > .right > .zoom {
+    pointer-events: auto;
+}
+
+.header > .center > .right > .zoom > div > button {
+    margin: 2px;
+    padding: 6px 8px;
+    border-radius: 2px;
+    background: #ffffff;
+    border: none;
+    outline: solid 1px #000000;
+}
+
+.header > .bottom {
+    position: relative;
+    bottom: 0;
+}
+
 .header > .bottom > .left > .joystick {
     padding: 6px;
+    pointer-events: auto;
 }
 
 .header > .bottom > .left > .joystick > div {
@@ -99,9 +151,9 @@ body {
 }
 
 .header > .bottom > .left > .joystick > div > .button > button {
-    width: 64px;
-    height: 64px;
-    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
     border: solid 3px #ffffff;
     outline: none;
     background: #ffffff55;
@@ -126,7 +178,7 @@ body {
 
 .layout > .game > .field {
     position: relative;
-    outline: solid 3px #ffbb00;
+    outline: solid 6px #00b4d8;
 }
 
 .layout > .game > .field > .line {

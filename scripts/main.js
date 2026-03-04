@@ -1,5 +1,8 @@
+const canFullscreen = true;
+
 const colors = [['ff4d6d', 'ffb3c1'], ['0582ca', '00a6fb'], ['2a9134', '5bba6f'], ['ffba08', 'ffe169'], ['7b2cbf', 'c77dff'], ['e85d04', 'faa307']];
 const radius = [[0, 0], [1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1], [0, -1], [1, -1], [-1, 1]];
+const zoomBorder = [0.5, 5];
 
 const leaderboardMax = 3;
 
@@ -13,18 +16,19 @@ let height = 50;
 let strength = 50;
 let players = []
 
-const cellStandard = [strength, 0, false, false];
+const cellStandard = [strength, 0];
 
-let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0, false, false]));
+let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0]));
 
 let player = { id: 1, nickname: 'Игрок', x: 25, y: 25, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
-let zoom = 4;
+let zoom = 3;
 
 const game = document.querySelector('.field');
 const container = document.querySelector('.game');
 const layout = document.querySelector('.layout');
 
 const leaderboard = document.querySelector('.header > .top > .left > .leaderboard > .content');
+const miniMap = document.querySelector('.header > .top > .right > .map');
 
 const joystick = [
     document.querySelector('.header > .bottom > .left > .joystick > .top > .button:nth-child(1) > button'),
@@ -34,16 +38,23 @@ const joystick = [
     document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button')
 ];
 
+const zoomer = [
+    document.querySelector('.header > .center > .right > .zoom > .more > button'),
+    document.querySelector('.header > .center > .right > .zoom > .less > button')
+]
+
 function requestFullscreen() {
-    // const element = document.documentElement;
+    if (canFullscreen) {
+        const element = document.documentElement;
     
-    // if (element.requestFullscreen) {
-    //     element.requestFullscreen();
-    // } else if (element.webkitRequestFullscreen) {
-    //     element.webkitRequestFullscreen();
-    // } else if (element.msRequestFullscreen) {
-    //     element.msRequestFullscreen();
-    // }
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        }
+    }
 }
 
 document.addEventListener('gesturestart', (event) => {
@@ -68,9 +79,6 @@ function generateMap() {
                 square.classList.add('cell');
 
                 if (player.x == x && player.y == y) {
-                    square.classList.add('captured');
-                    square.style.background = `#${colors[player.id - 1][1]}`;
-
                     players.push(player);
                 }
 
@@ -161,7 +169,7 @@ function findValidCells() {
     const validCells = [];
     
     function isTargetValue(cell) {
-      return cell[0] === cellStandard[0] && cell[1] === cellStandard[1] && cell[2] === cellStandard[2] && cell[3] === cellStandard[3];
+        return cell[0] === cellStandard[0] && cell[1] === cellStandard[1];
     }
 
     map.forEach((line, y) => {
@@ -178,6 +186,12 @@ function findValidCells() {
                         const newPos = { x: x + element[0], y: y + element[0] }
 
                         if (newPos.y >= 0 && newPos.y < height && newPos.x >= 0 && newPos.x < width) {
+                            players.forEach(player => {
+                                if (player.captured.some(pos => pos[0] == newPos.x && pos[1] == newPos.y)) {
+                                    allNeighborsValid = false;
+                                }
+                            });
+
                             if (!isTargetValue(map[newPos.y][newPos.x])) {
                                 allNeighborsValid = false;
                             }
@@ -395,7 +409,40 @@ function generateLeaderboard() {
     counts = counts.sort((a, b) => b[1] - a[1]).slice(0, leaderboardMax);
 
     counts.forEach((player, index) => {
-        leaderboard.innerHTML += `<span style="color: #${colors[player[0] - 1][0]};">${index + 1}. ${players[player[0] - 1].nickname} <span>${player[1]}</span></span>`;
+        if (player[0] == 1) {
+            add = ' (Вы)'
+        } else {
+            add = ''
+        }
+
+        leaderboard.innerHTML += `<span style="color: #${colors[player[0] - 1][0]};">#${index + 1} – ${players[player[0] - 1].nickname}${add}<span>${player[1]}</span></span>`;
+    });
+}
+
+function generateMiniMap() {
+    miniMap.textContent = '';
+    
+    map.forEach((line, y) => {
+        const row = document.createElement('div');
+        row.classList.add('line');
+
+        line.forEach((cell, x) => {
+            const square = document.createElement('div');
+
+            square.classList.add('cell');
+
+            square.style.background = '#cccccc';
+
+            players.forEach(player => {
+                if (player.captured.some(pos => pos[0] == x && pos[1] == y)) {
+                    square.style.background = `#${colors[player.id - 1][0]}`;
+                }
+            });
+
+            row.appendChild(square);
+        });
+
+        miniMap.appendChild(row);
     });
 }
 
@@ -447,6 +494,22 @@ joystick.forEach((element, index) => {
     });
 });
 
+zoomer[0].addEventListener('click', () => {
+    if (zoom + 0.1 <= zoomBorder[1]) {
+        zoom += 0.1;
+    }
+
+    centerOffset();
+});
+
+zoomer[1].addEventListener('click', () => {
+    if (zoom - 0.1 >= zoomBorder[0]) {
+        zoom -= 0.1;
+    }
+
+    centerOffset();
+});
+
 function centerOffset() {
     const playerCell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
     
@@ -491,9 +554,11 @@ function main() {
         });
 
         generateLeaderboard();
+        generateMiniMap();
 
         setInterval(() => {
             generateLeaderboard();
+            generateMiniMap();
         }, 2500);
     }, 50);
 }
