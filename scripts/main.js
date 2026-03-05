@@ -1,4 +1,5 @@
 const canFullscreen = true;
+const canOverlay = true;
 
 const colors = [['ff4d6d', 'ffb3c1'], ['0582ca', '00a6fb'], ['2a9134', '5bba6f'], ['ffba08', 'ffe169'], ['7b2cbf', 'c77dff'], ['e85d04', 'faa307']];
 const radius = [[0, 0], [1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1], [0, -1], [1, -1], [-1, 1]];
@@ -33,9 +34,9 @@ const miniMap = document.querySelector('.header > .top > .right > .map');
 const joystick = [
     document.querySelector('.header > .bottom > .left > .joystick > .top > .button:nth-child(1) > button'),
     document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(1) > button'),
-    document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(2) > button'),
+    document.querySelector('.header > .bottom > .right > .attack > .button > button'),
     document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(3) > button'),
-    document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button')
+    document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button'),
 ];
 
 const zoomer = [
@@ -95,38 +96,59 @@ function checkPos(x, y) {
     return !players.some(player => player.x == x && player.y == y);
 }
 
-function generatePlayer() {
-    const cell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
+function generateEntity(entity) {
+    const cell = document.querySelector(`[data-x="${entity.x}"][data-y="${entity.y}"]`);
 
     cell.innerHTML = '';
 
-    const playerElement = document.createElement('div');
+    const entityElement = document.createElement('div');
 
-    playerElement.classList.add('player');
-    playerElement.style.background = `#${colors[player.id - 1][0]}`;
+    entityElement.classList.add('player');
+    entityElement.style.background = `#${colors[entity.id - 1][0]}`;
 
     const nicknameElement = document.createElement('span');
 
-    nicknameElement.textContent = player.nickname;
+    nicknameElement.textContent = entity.nickname;
 
-    cell.appendChild(playerElement);
+    let counts = [];
+
+    players.forEach(player => {
+        let count = 0;
+
+        player.captured.forEach(cell => { count += map[cell[1]][cell[0]][0] });
+
+        counts.push([player.id, count]);
+    });
+
+    counts = counts.sort((a, b) => b[1] - a[1]).slice(0, 1)[0];
+
+    cell.appendChild(entityElement);
     cell.appendChild(nicknameElement);
+
+    if (counts[0] == entity.id) {
+        const crownElement = document.createElement('div');
+        crownElement.classList.add('crown');
+
+        crownElement.innerHTML = '<i class="fi fi-ss-crown" style="color: #ffbe0b;"></i>';
+
+        cell.appendChild(crownElement);
+    }
 }
 
-function generateRadius() {
+function generateRadius(entity) {
     radius.forEach(element => {
-        const newX = player.x + element[0];
-        const newY = player.y + element[1];
+        const newX = entity.x + element[0];
+        const newY = entity.y + element[1];
 
         if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
-            map[newY][newX][0] = player.cellMin;
+            map[newY][newX][0] = entity.cellMin;
 
             if (element[0] == 0 && element[1] == 0) {
-                map[player.y][player.x][2] = true;
-                generateFlag(player.x, player.y);
+                map[entity.y][entity.x][2] = true;
+                generateFlag(entity.x, entity.y);
             }
 
-            cellCapture(newX, newY);
+            captureCell(entity, newX, newY);
             generateCount(newX, newY);
         }
     });
@@ -155,17 +177,9 @@ function generateCount(x, y) {
     countElement.textContent = map[y][x][0];
     cell.appendChild(countElement);
 
-    if (x == player.x && y == player.y) {
-        generatePlayer();
-    }
-
-    players.forEach(player => {
-        if (x == player.x && y == player.y) {
-            if (player.id == 1) {
-                generatePlayer();
-            } else {
-                generateBot(player);
-            }
+    players.forEach(entity => {
+        if (x == entity.x && y == entity.y) {
+            generateEntity(entity);
         }
     });
 }
@@ -238,33 +252,15 @@ function createBot() {
     const validCells = findValidCells();
     const cell = validCells[Math.floor(Math.random() * validCells.length)];
     
-    const bot = { id: players.length + 1, nickname: generateBotUsername(), x: cell.x, y: cell.y, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
+    const bot = { id: players.length + 1, nickname: generateUsername(), x: cell.x, y: cell.y, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
 
     players.push(bot);
 
-    generateBot(bot);
-    generateBotRadius(bot);
+    generateEntity(bot);
+    generateRadius(bot);
 }
 
-function generateBot(bot) {
-    const cell = document.querySelector(`[data-x="${bot.x}"][data-y="${bot.y}"]`);
-
-    cell.innerHTML = '';
-
-    const botElement = document.createElement('div');
-
-    botElement.classList.add('player');
-    botElement.style.background = `#${colors[bot.id - 1][0]}`;
-
-    const nicknameElement = document.createElement('span');
-
-    nicknameElement.textContent = bot.nickname;
-
-    cell.appendChild(botElement);
-    cell.appendChild(nicknameElement);
-}
-
-function generateBotUsername() {
+function generateUsername() {
     const random = Math.floor(Math.random() * 3);
 
     if (random == 0) {
@@ -276,173 +272,95 @@ function generateBotUsername() {
     }
 }
 
-function generateBotRadius(bot) {
-    radius.forEach(element => {
-        const newX = bot.x + element[0];
-        const newY = bot.y + element[1];
+function moveEntity(entity, direction) {
+    const old = { x: entity.x, y: entity.y };
 
-        if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
-            map[newY][newX][0] = bot.cellMin;
-
-            if (element[0] == 0 && element[1] == 0) {
-                map[bot.y][bot.x][3] == true;
-                generateFlag(bot.x, bot.y);
-            }
-
-            botCellCapture(bot, newX, newY);
-            generateCount(newX, newY);
+    if (direction == 0 && entity.y > 0) {
+        if (checkPos(entity.x, entity.y - 1)) {
+            entity.y -= 1;
         }
-    });
-}
-
-function movePlayer(direction) {
-    const old = { x: player.x, y: player.y };
-
-    if (direction == 0 && player.y > 0) {
-        if (checkPos(player.x, player.y - 1)) {
-            player.y -= 1;
+    } else if (direction == 1 && entity.y < height - 1) {
+        if (checkPos(entity.x, entity.y + 1)) {
+            entity.y += 1;
         }
-    } else if (direction == 1 && player.y < height - 1) {
-        if (checkPos(player.x, player.y + 1)) {
-            player.y += 1;
+    } else if (direction == 2 && entity.x > 0) {
+        if (checkPos(entity.x - 1, entity.y)) {
+            entity.x -= 1;
         }
-    } else if (direction == 2 && player.x > 0) {
-        if (checkPos(player.x - 1, player.y)) {
-            player.x -= 1;
-        }
-    } else if (direction == 3 && player.x < width - 1) {
-        if (checkPos(player.x + 1, player.y)) {
-            player.x += 1;
+    } else if (direction == 3 && entity.x < width - 1) {
+        if (checkPos(entity.x + 1, entity.y)) {
+            entity.x += 1;
         }
     }
 
     generateCount(old.x, old.y);
-    generatePlayer();
+    generateEntity(entity);
 
-    centerOffset();
-}
-
-function moveBot(bot, direction) {
-    const old = { x: players[bot.id - 1].x, y: players[bot.id - 1].y };
-
-    if (direction == 0 && players[bot.id - 1].y > 0) {
-        if (checkPos(players[bot.id - 1].x, players[bot.id - 1].y - 1)) {
-            players[bot.id - 1].y -= 1;
-        }
-    } else if (direction == 1 && players[bot.id - 1].y < height - 1) {
-        if (checkPos(players[bot.id - 1].x, players[bot.id - 1].y + 1)) {
-            players[bot.id - 1].y += 1;
-        }
-    } else if (direction == 2 && players[bot.id - 1].x > 0) {
-        if (checkPos(players[bot.id - 1].x - 1, players[bot.id - 1].y)) {
-            players[bot.id - 1].x -= 1;
-        }
-    } else if (direction == 3 && players[bot.id - 1].x < width - 1) {
-        if (checkPos(players[bot.id - 1].x + 1, players[bot.id - 1].y)) {
-            players[bot.id - 1].x += 1;
-        }
+    if (entity.id == 1) {
+        centerOffset();
     }
-
-    generateCount(old.x, old.y);
-    generateBot(bot);
 }
 
-function playerCapture() {
-    if (map[player.y][player.x][0] <= 0 && !player.captured.some(pos => pos[0] == player.x && pos[1] == player.y)) {
-        cellCapture(player.x, player.y);
-    } else if (!player.captured.some(pos => pos[0] == player.x && pos[1] == player.y)) {
-        map[player.y][player.x][0] -= 1;
-    } else {
-        if (map[player.y][player.x][0] < player.cellMax) {
-            map[player.y][player.x][0] += 1;
-        }
-    }
-
-    generateCount(player.x, player.y);
-}
-
-function botCapture(bot) {
-    // Проверяем, принадлежит ли текущая клетка этому боту
-    const isOwnedByThisBot = bot.captured.some(pos => pos[0] == bot.x && pos[1] == bot.y);
+function attack(entity) {
+    const isOwnedByThisEntity = entity.captured.some(pos => pos[0] == entity.x && pos[1] == entity.y);
     
-    // Если клетка уже принадлежит боту - ничего не делаем
-    if (isOwnedByThisBot) {
+    if (isOwnedByThisEntity) {
+        if (map[entity.y][entity.x][0] < entity.cellMax) {
+            map[entity.y][entity.x][0] += 1;
+        }
+
+        generateCount(entity.x, entity.y);
+        
         return;
     }
-    
-    // Атакуем только текущую клетку, на которой стоит бот
-    if (map[bot.y][bot.x][0] <= 0) {
-        // Клетка готова к захвату
-        botCellCapture(bot, bot.x, bot.y);
-    } else {
-        // Уменьшаем значение клетки
-        map[bot.y][bot.x][0] -= 1;
-    }
 
-    generateCount(bot.x, bot.y);
-}
-
-function cellCapture(x, y) {
-    let capturedByOther = false;
-    let otherPlayer = null;
-    
-    players.forEach(player => {
-        const cellIndex = player.captured.findIndex(pos => pos[0] == x && pos[1] == y);
-
-        if (cellIndex !== -1 && player.id !== 1) {
-            capturedByOther = true;
-            otherPlayer = player;
+    players.forEach(otherPlayer => {
+        if (otherPlayer.id !== entity.id) {
+            const cellIndex = otherPlayer.captured.findIndex(pos => pos[0] == entity.x && pos[1] == entity.y);
+            if (cellIndex !== -1) {
+                otherPlayer.captured.splice(cellIndex, 1);
+            }
         }
     });
     
-    if (capturedByOther && otherPlayer) {
-        otherPlayer.captured = otherPlayer.captured.filter(pos => !(pos[0] === x && pos[1] === y));
+    if (map[entity.y][entity.x][0] <= 0) {
+        captureCell(entity, entity.x, entity.y);
+    } else {
+        map[entity.y][entity.x][0] -= 1;
     }
+
+    generateCount(entity.x, entity.y);
+}
+
+function captureCell(entity, x, y) {
+    if (!entity.captured.some(pos => pos[0] == x && pos[1] == y)) {
+        entity.captured.push([x, y]);
+    }
+}
+
+function passiveIncome(entity) {
+    requestAnimationFrame(() => {
+        setInterval(() => {
+            entity.captured.forEach(pos => {
+                if (map[pos[1]][pos[0]][0] < entity.cellMax) {
+                    map[pos[1]][pos[0]][0] += 1;
+                }
+
+                generateCount(pos[0], pos[1]);
+            });
+        }, 1000);
+    });
+}
+
+function botActive(entity) {
+    if (entity.id == 1) return;
     
-    if (!player.captured.some(pos => pos[0] == x && pos[1] == y)) {
-        player.captured.push([x, y]);
-    }
-}
-
-function botCellCapture(bot, x, y) {
-    bot.captured.push([x, y]);
-}
-
-function passiveCapture() {
     requestAnimationFrame(() => {
         setInterval(() => {
-            player.captured.forEach(pos => {
-                if (map[pos[1]][pos[0]][0] < player.cellMax) {
-                    map[pos[1]][pos[0]][0] += 1;
-                }
-
-                generateCount(pos[0], pos[1]);
-            });
-        }, 1000);
-    });
-}
-
-function botPassiveCapture(bot) {
-    requestAnimationFrame(() => {
-        setInterval(() => {
-            bot.captured.forEach(pos => {
-                if (map[pos[1]][pos[0]][0] < bot.cellMax) {
-                    map[pos[1]][pos[0]][0] += 1;
-                }
-
-                generateCount(pos[0], pos[1]);
-            });
-        }, 1000);
-    });
-}
-
-function botActive(bot) {
-    requestAnimationFrame(() => {
-        setInterval(() => {
-            moveBot(bot, Math.floor(Math.random() * 4));
+            moveEntity(entity, Math.floor(Math.random() * 4));
             
             for (let index = 0; index < strength + 1; index++) {
-                botCapture(bot);
+                attack(entity);
             }
         }, 1000);
     });
@@ -463,17 +381,31 @@ function generateLeaderboard() {
         counts.push([player.id, count]);
     });
 
-    counts = counts.sort((a, b) => b[1] - a[1]).slice(0, leaderboardMax);
+    counts = counts.sort((a, b) => b[1] - a[1]);
+    
+    const topPlayers = counts.slice(0, leaderboardMax);
+    
+    const currentPlayerInTop = topPlayers.some(player => player[0] == 1);
+    
+    let currentPlayerData = null;
+    let currentPlayerRank = null;
+    
+    if (!currentPlayerInTop) {
+        currentPlayerData = counts.find(player => player[0] == 1);
+        currentPlayerRank = counts.findIndex(player => player[0] == 1) + 1;
+    }
 
-    counts.forEach((player, index) => {
-        if (player[0] == 1) {
-            add = ' (Вы)'
-        } else {
-            add = ''
-        }
-
+    topPlayers.forEach((player, index) => {
+        let add = player[0] == 1 ? ' (Вы)' : '';
+        
         leaderboard.innerHTML += `<span style="color: #${colors[player[0] - 1][0]};">#${index + 1} – ${players[player[0] - 1].nickname}${add}<span>${player[1]}</span></span>`;
     });
+    
+    if (!currentPlayerInTop && currentPlayerData) {
+        leaderboard.innerHTML += `<span style="color: #ffffff;">...</span>`;
+        
+        leaderboard.innerHTML += `<span style="color: #${colors[0][0]};">#${currentPlayerRank} – ${players[0].nickname} (Вы)<span>${currentPlayerData[1]}</span></span>`;
+    }
 }
 
 function generateMiniMap() {
@@ -492,7 +424,7 @@ function generateMiniMap() {
 
             players.forEach(player => {
                 if (player.captured.some(pos => pos[0] == x && pos[1] == y)) {
-                    square.style.background = `#${colors[player.id - 1][1]}`;
+                    square.style.background = `#${colors[player.id - 1][0]}`;
                 }
             });
 
@@ -514,7 +446,7 @@ function generateMiniMap() {
 
                     if (players[count[0] - 1].x == x && players[count[0] - 1].y == y) {
                         square.classList.add('player');
-                        square.innerHTML = '<i class="fi fi-sr-crown" style="font-size: 4px; position: relative; bottom: 11px; right: 1px; color: #e85d04;"></i>';
+                        square.innerHTML = '<i class="fi fi-ss-crown" style="-webkit-text-stroke: 1px #000000; font-size: 12px; position: relative; bottom: 11px; right: 1px; color: #ffbe0b;"></i>';
                     }
                 }
             });
@@ -528,15 +460,15 @@ function generateMiniMap() {
 
 document.body.onkeydown = (event) => {
     if (event.code == 'ArrowUp' || event.code == 'KeyW') {
-        movePlayer(0);
+        moveEntity(player, 0);
     } else if (event.code == 'ArrowDown' || event.code == 'KeyS') {
-        movePlayer(1);
+        moveEntity(player, 1);
     } else if (event.code == 'ArrowLeft' || event.code == 'KeyA') {
-        movePlayer(2);
+        moveEntity(player, 2);
     } else if (event.code == 'ArrowRight' || event.code == 'KeyD') {
-        movePlayer(3);
+        moveEntity(player, 3);
     } else if (event.code == 'KeyE') {
-        playerCapture();
+        attack(player);
     }
 }
 
@@ -545,15 +477,15 @@ joystick.forEach((element, index) => {
         e.preventDefault();
         
         if (index == 0) {
-            movePlayer(0);
+            moveEntity(player, 0);
         } else if (index == 1) {
-            movePlayer(2);
+            moveEntity(player, 2);
         } else if (index == 2) {
-            playerCapture();
+            attack(player);
         } else if (index == 3) {
-            movePlayer(3);
+            moveEntity(player, 3);
         } else if (index == 4) {
-            movePlayer(1);
+            moveEntity(player, 1);
         }
     });
 
@@ -561,15 +493,15 @@ joystick.forEach((element, index) => {
         e.preventDefault();
         
         if (index == 0) {
-            movePlayer(0);
+            moveEntity(player, 0);
         } else if (index == 1) {
-            movePlayer(2);
+            moveEntity(player, 2);
         } else if (index == 2) {
-            playerCapture();
+            attack(player);
         } else if (index == 3) {
-            movePlayer(3);
+            moveEntity(player, 3);
         } else if (index == 4) {
-            movePlayer(1);
+            moveEntity(player, 1);
         }
     });
 });
@@ -607,11 +539,30 @@ function centerOffset() {
     }
 }
 
+function checkOrientation() {
+    const overlay = document.querySelector('.overlay');
+
+    if (canOverlay) {
+        if (window.innerHeight > window.innerWidth) {
+            overlay.classList.add('active');
+        } else {
+            overlay.classList.remove('active');
+        }
+    }
+}
+
 function main() {
     document.body.addEventListener('click', function fullscreenHandler() {
         requestFullscreen();
         document.body.removeEventListener('click', fullscreenHandler);
     }, { once: true });
+
+    window.addEventListener('load', checkOrientation);
+    window.addEventListener('resize', checkOrientation);
+
+    if (window.screen && window.screen.orientation) {
+        window.screen.orientation.addEventListener('change', checkOrientation);
+    }
     
     generateMap();
     
@@ -627,21 +578,17 @@ function main() {
 
             players.push(player);
 
-            generatePlayer();
-            generateRadius();
+            generateEntity(player);
+            generateRadius(player);
             centerOffset();
 
             for (let index = 0; index < colors.length - 1; index++) {
                 createBot();
             }
 
-            players.forEach(player => {
-                if (player.id == 1) {
-                    passiveCapture();
-                } else {
-                    botPassiveCapture(player);
-                    botActive(player);
-                }
+            players.forEach(entity => {
+                passiveIncome(entity);
+                botActive(entity);
             });
 
             generateLeaderboard();

@@ -1,4 +1,6 @@
 @import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css');
+@import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
 * {
     font-family: Arial, sans-serif;
@@ -21,6 +23,27 @@ body {
     padding: 0;
     overflow: hidden;
     touch-action: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.overlay.active {
+    display: flex;
 }
 
 .container {
@@ -92,11 +115,41 @@ body {
     margin-left: 10px;
 }
 
+.header > .top > .center {
+    background: #00000088;
+    color: #ffffff;
+    margin-top: 6px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header > .top > .center > div > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 0 10px;
+}
+
+.header > .top > .center > div > span > i {
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+.header > .top > .center > div > span > b {
+    position: relative;
+    bottom: 2px;
+    font-size: 16px;
+}
+
 .header > .top > .right {
     padding: 6px;
     border-radius: 6px;
     background: #000000;
     margin: 6px;
+    opacity: 0.6;
 }
 
 .header > .top > .right > .map {
@@ -112,10 +165,6 @@ body {
     height: 2px;
 }
 
-.header > .top > .right > .map > .line > .player {
-    transform: scale(3);
-}
-
 .header > .center {
     height: 0%;
 }
@@ -125,12 +174,12 @@ body {
 }
 
 .header > .center > .right > .zoom > div > button {
-    margin: 2px;
+    margin-bottom: 10px;
     padding: 6px 8px;
     border-radius: 2px;
-    background: #ffffff;
+    background: #ffffff88;
     border: none;
-    outline: solid 1px #000000;
+    outline: solid 2px #00000088;
 }
 
 .header > .bottom {
@@ -158,21 +207,53 @@ body {
     width: 48px;
     height: 48px;
     font-size: 24px;
-    border: solid 3px #ffffff;
+    border: solid 3px #ffffff88;
+    z-index: 10;
     outline: none;
-    background: #ffffff55;
+    background: #000000;
     border-radius: 6px;
     cursor: pointer;
 }
 
 .header > .bottom > .left > .joystick > div > .button > button > i {
     position: relative;
-    top: 4px;
+    color: #ffffff;
+    top: 3px;
+    z-index: 3;
 }
 
 .header > .bottom > .left > .joystick > .center > .button:nth-child(2) > button {
-    border-color: #ff4d6d;
-    background: #ffb3c1;
+    outline: solid 3px #00000088;
+    z-index: 0;
+    transform: scale(2.4);
+    border-radius: 100%;
+    border: none;
+    background: none;
+    pointer-events: none;
+}
+
+.header > .bottom > .right > .attack {
+    pointer-events: auto;
+}
+
+.header > .bottom > .right > .attack > .button {
+    padding: 10px;
+}
+
+.header > .bottom > .right > .attack > .button > button {
+    width: 148px;
+    height: 148px;
+    font-size: 60px;
+    border: solid 12px #ff4d6d88;
+    background: #ffb3c188;
+    outline: none;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.header > .bottom > .right > .attack > .button > button > i {
+    position: relative;
+    top: 8px;
 }
 
 .layout {
@@ -222,6 +303,22 @@ body {
     z-index: 10;
     pointer-events: none;
     z-index: 100;
+}
+
+.layout > .game > .field > .line > .cell > .crown {
+    position: absolute;
+    top: -25px;
+    -webkit-text-stroke: 0.5px #000000;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    white-space: nowrap;
+    color: #000000;
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 10;
+    pointer-events: none;
+    z-index: 101;
 }
 
 .layout > .game > .field > .line > .cell > .count {
