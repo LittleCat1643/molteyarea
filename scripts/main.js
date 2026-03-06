@@ -1,28 +1,15 @@
 const canFullscreen = true;
 const canOverlay = true;
-
-const colors = [['ff4d6d', 'ffb3c1'], ['0582ca', '00a6fb'], ['2a9134', '5bba6f'], ['ffba08', 'ffe169'], ['7b2cbf', 'c77dff'], ['e85d04', 'faa307']];
-const radius = [[0, 0], [1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1], [0, -1], [1, -1], [-1, 1]];
 const zoomBorder = [0.5, 5];
-
 const leaderboardMax = 3;
+
+const colorsOld = [['ff4d6d', 'ffb3c1'], ['0582ca', '00a6fb'], ['2a9134', '5bba6f'], ['ffba08', 'ffe169'], ['7b2cbf', 'c77dff'], ['e85d04', 'faa307']];
+const colors = [['ff0000', 'ff6666'], ['ff7f00', 'ffa64d'], ['ffd700', 'ffe566'], ['32cd32', '98fb98'], ['00bfff', '87cefa'], ['1e90ff', '6ab0ff'], ['8a2be2', 'b47bff'], ['ff69b4', 'ffb6c1'], ['40e0d0', '9fe2df'], ['dc143c', 'ff6b8b'], ['daa520', 'f4c542'], ['9acd32', 'c0e36b'], ['4b0082', '7a4fa0'], ['ff7f50', 'ffa07a'], ['9932cc', 'b96bcf'], ['00ffff', '7fffff'], ['7fff00', 'b2ff66'], ['da70d6', 'e9a0e6'], ['ff4500', 'ff7d4d'], ['00ff7f', '7fffaf'], ['6a5acd', '9285e0'], ['ff8c00', 'ffb347'], ['e75480', 'f291b2'], ['007ff0', '4da6ff']];
 
 const enFirstUsernamesPart = ['Good', 'Bad', 'Happy', 'Sad', 'Big', 'Small', 'Young', 'Old', 'Beautiful', 'Ugly', 'Nice', 'Mean', 'Kind', 'Cruel', 'Clever', 'Stupid', 'Busy', 'Lazy', 'Quiet', 'Noisy', 'Hot', 'Cold', 'Hungry', 'Full', 'Tired', 'Rested', 'Strong', 'Weak', 'Brave', 'Scared', 'Rich', 'Poor', 'Important', 'Unimportant', 'Easy', 'Difficult', 'Interesting', 'Boring', 'Exciting', 'Calming', 'Funny', 'Serious', 'Angry', 'Friendly', 'Polite', 'Rude', 'Clean', 'Dirty', 'New', 'Old', 'Modern', 'Traditional', 'Comfortable', 'Uncomfortable', 'Safe', 'Dangerous', 'Healthy', 'Sick', 'Fast', 'Slow', 'Long', 'Short', 'Deep', 'Shallow', 'High', 'Low', 'Wide', 'Narrow', 'Thick', 'Thin', 'Heavy', 'Light', 'Soft', 'Hard', 'Smooth', 'Rough'];
 const enSecondUsernamesPart = ['Time', 'Person', 'Year', 'Way', 'Day', 'Thing', 'Man', 'World', 'Life', 'Hand', 'Part', 'Child', 'Eye', 'Woman', 'Place', 'Work', 'Week', 'Case', 'Point', 'Government', 'Company', 'Number', 'Group', 'Problem', 'Fact', 'Side', 'Member', 'Family', 'System', 'Area', 'Year', 'Community', 'Name', 'Thing', 'Country', 'House', 'Service', 'Friend', 'Story', 'Customer', 'Job', 'School', 'City', 'State', 'Plant', 'Resource', 'Money', 'Air', 'Health', 'Structure', 'Car', 'Product', 'Information', 'Food', 'Safety', 'Water', 'Room', 'Level', 'Book', 'Top', 'Teacher', 'Line', 'Order', 'Word', 'Question', 'Door', 'Answer', 'Key', 'Phone', 'Result', 'Week', 'Girl', 'Boy', 'Minute', 'Corner', 'Face', 'Tax', 'Hour', 'Plan', 'Brand', 'Rule', 'Mind', 'Shape', 'Goal', 'Step', 'Weight', 'Pattern', 'Price', 'View', 'Ball', 'Month', 'Paper', 'Sign', 'Glass', 'Kind', 'Space', 'Sun', 'Music'];
 const ruFirstUsernamesPart = ['Александр', 'Дмитрий', 'Максим', 'Иван', 'Михаил', 'Владимир', 'Сергей', 'Андрей', 'Николай', 'Виктор', 'Олег', 'Юрий', 'Артем', 'Антон', 'Павел', 'Игорь', 'Роман', 'Евгений', 'Анатолий', 'Егор', 'Никита', 'Алексей', 'Валерий', 'Семён', 'Кирилл', 'Денис', 'Вячеслав', 'Тимофей', 'Владислав', 'Степан', 'Леонид', 'Борис', 'Григорий', 'Виктор', 'Эдуард', 'Семён', 'Василий', 'Виталий', 'Александр', 'Руслан', 'Тимур', 'Даниил', 'Матвей', 'Константин', 'Виктор', 'Мирон', 'Илья', 'Родион', 'Глеб', 'Лев', 'Ярослав', 'Марк', 'Егор', 'Кирилл'];
 const ruSecondUsernamesPart = ['Иванов', 'Смирнов', 'Кузнецов', 'Попов', 'Васильев', 'Петров', 'Соколов', 'Михайлов', 'Новиков', 'Фёдоров', 'Морозов', 'Волков', 'Алексеев', 'Лебедев', 'Семёнов', 'Егоров', 'Павлов', 'Батурин', 'Степанов', 'Николаев', 'Орлов', 'Андреев', 'Макаров', 'Никитин', 'Захаров', 'Зайцев', 'Соловьёв', 'Васильев', 'Быков', 'Воробьёв', 'Гусев', 'Фёдоров', 'Чушкин', 'Молотов', 'Миронов', 'Белов', 'Комаров', 'Григорьев', 'Степанов', 'Коняхин', 'Киселёв', 'Сергеев', 'Кириллов', 'Воронов', 'Блинников', 'Макаров', 'Анисимов', 'Логинов', 'Шутов', 'Романов', 'Игнатьев', 'Жданов', 'Филиппов'];
-
-let width = 50;
-let height = 50;
-let strength = 10;
-let players = []
-
-const cellStandard = [strength, 0, false];
-
-let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0, false]));
-
-let player = { id: 1, nickname: 'Игрок', x: 25, y: 25, cellMin: 1, cellMax: 99, captured: [], canFlag: false, flagCount: 1, flagsAvailable: 0, kills: 0 }
-let zoom = 3;
 
 const game = document.querySelector('.field');
 const container = document.querySelector('.game');
@@ -31,29 +18,34 @@ const layout = document.querySelector('.layout');
 const leaderboard = document.querySelector('.header > .top > .left > .leaderboard > .content');
 const miniMap = document.querySelector('.header > .top > .right > .map');
 
-const joystick = [
-    document.querySelector('.header > .bottom > .left > .joystick > .top > .button:nth-child(1) > button'),
-    document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(1) > button'),
-    document.querySelector('.header > .bottom > .right > .attack > .button > button'),
-    document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(3) > button'),
-    document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button'),
-];
+const joystick = [document.querySelector('.header > .bottom > .left > .joystick > .top > .button:nth-child(1) > button'), document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(1) > button'), document.querySelector('.header > .bottom > .right > .attack > .button > button'), document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(3) > button'), document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button')];
+const zoomer = [document.querySelector('.header > .center > .right > .zoom > .more > button'), document.querySelector('.header > .center > .right > .zoom > .less > button')];
 
-const zoomer = [
-    document.querySelector('.header > .center > .right > .zoom > .more > button'),
-    document.querySelector('.header > .center > .right > .zoom > .less > button')
-]
+let width = 50;
+let height = 50;
+let strength = 10;
+
+let attackTimer = null;
+let attackInterval = 500;
+
+let zoom = 3;
+
+let cellStandard = [strength, 0, false];
+
+let players = [];
+
+let map = Array(height).fill().map(() => Array(width).fill().map(() => [strength, 0, false]));
+
+let player = { id: 1, nickname: 'Игрок', x: 25, y: 25, cellMin: 1, cellMax: 99, captured: [], flagCount: 1, kills: 0 };
 
 function requestFullscreen() {
     if (canFullscreen) {
-        const element = document.documentElement;
-    
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+            document.documentElement.msRequestFullscreen();
         }
     }
 }
@@ -136,22 +128,25 @@ function generateEntity(entity) {
 }
 
 function generateRadius(entity) {
-    radius.forEach(element => {
-        const newX = entity.x + element[0];
-        const newY = entity.y + element[1];
+    for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+            const newX = entity.x + dx;
+            const newY = entity.y + dy;
 
-        if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
-            map[newY][newX][0] = entity.cellMin;
+            if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
+                map[newY][newX][0] = entity.cellMin;
 
-            if (element[0] == 0 && element[1] == 0) {
-                map[entity.y][entity.x][2] = true;
-                generateFlag(entity.x, entity.y);
+                if (dx == 0 && dy == 0) {
+                    map[entity.y][entity.x][2] = true;
+
+                    generateFlag(entity.x, entity.y);
+                }
+
+                captureCell(entity, newX, newY);
+                generateCount(newX, newY);
             }
-
-            captureCell(entity, newX, newY);
-            generateCount(newX, newY);
         }
-    });
+    }
 }
 
 function generateFlag(x, y) {
@@ -161,20 +156,37 @@ function generateFlag(x, y) {
 
 function generateCount(x, y) {
     const cell = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
-
+    
     cell.innerHTML = '';
 
     const countElement = document.createElement('div');
     countElement.classList.add('count');
 
-    players.forEach(player => {
-        if (player.captured.some(pos => pos[0] == x && pos[1] == y)) {
-            cell.classList.add('captured');
-            cell.style.background = `#${colors[player.id - 1][1]}`;
-        }
-    });
+    let capturedBy = null;
+    players.forEach(player => { if (player.captured.some(pos => pos[0] == x && pos[1] == y)) { capturedBy = player } });
 
-    countElement.textContent = map[y][x][0];
+    const count = map[y][x][0];
+    
+    if (capturedBy) {
+        const baseColor = colors[capturedBy.id - 1][1];
+        
+        const r = parseInt(baseColor.substr(0, 2), 16);
+        const g = parseInt(baseColor.substr(2, 2), 16);
+        const b = parseInt(baseColor.substr(4, 2), 16);
+        
+        const lightenFactor = 0.5 + (count / 99) * 0.5;
+
+        const adjustedR = Math.round(r + (255 - r) * (1 - lightenFactor));
+        const adjustedG = Math.round(g + (255 - g) * (1 - lightenFactor));
+        const adjustedB = Math.round(b + (255 - b) * (1 - lightenFactor));
+        
+        cell.style.background = `rgb(${adjustedR}, ${adjustedG}, ${adjustedB})`;
+        cell.classList.add('captured');
+    } else {
+        cell.style.background = '';
+    }
+
+    countElement.textContent = count;
     cell.appendChild(countElement);
 
     players.forEach(entity => {
@@ -193,52 +205,65 @@ function findValidCells() {
 
     map.forEach((line, y) => {
         line.forEach((cell, x) => {
-            if (!(x < 1 || x >= width - 1 || y < 1 || y >= height - 1)) {
-                if (isStandardCell(cell) && checkPos(x, y)) {
-                    let allAreaFree = true;
-                    const futureArea = [];
-                    
-                    radius.forEach(element => {
-                        const newX = x + element[0];
-                        const newY = y + element[1];
-                        
-                        if (newY >= 0 && newY < height && newX >= 0 && newX < width) {
-                            futureArea.push([newX, newY]);
-                            
-                            if (!isStandardCell(map[newY][newX])) {
-                                allAreaFree = false;
-                            }
-                            
-                            if (!checkPos(newX, newY)) {
-                                allAreaFree = false;
-                            }
-                            
-                            const isCaptured = players.some(player => 
-                                player.captured.some(pos => pos[0] == newX && pos[1] == newY)
-                            );
-                            
-                            if (isCaptured) {
-                                allAreaFree = false;
-                            }
-                        } else {
+            if (x < 1 || x >= width - 1 || y < 1 || y >= height - 1) return;
+            
+            if (isStandardCell(cell) && checkPos(x, y)) {
+                let allAreaFree = true;
+                
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        const newX = x + dx;
+                        const newY = y + dy;
+
+                        if (newY < 0 || newY >= height || newX < 0 || newX >= width) {
                             allAreaFree = false;
+                            break;
                         }
-                    });
-                    
-                    if (allAreaFree) {
-                        const willBeOccupied = players.some(existingPlayer => {
-                            if (existingPlayer.id == 1) return false;
-                            
-                            return radius.some(element => {
-                                const otherX = existingPlayer.x + element[0];
-                                const otherY = existingPlayer.y + element[1];
-                                return otherX == x && otherY == y;
-                            });
-                        });
+
+                        if (!isStandardCell(map[newY][newX])) {
+                            allAreaFree = false;
+                            break;
+                        }
                         
-                        if (!willBeOccupied) {
-                            validCells.push({x, y});
+                        if (!checkPos(newX, newY)) {
+                            allAreaFree = false;
+                            break;
                         }
+                        
+                        const isCaptured = players.some(player => 
+                            player.captured.some(pos => pos[0] == newX && pos[1] == newY)
+                        );
+                        
+                        if (isCaptured) {
+                            allAreaFree = false;
+                            break;
+                        }
+                    }
+                    if (!allAreaFree) break;
+                }
+                
+                if (allAreaFree) {
+                    let willBeOccupied = false;
+                    
+                    for (const existingPlayer of players) {
+                        if (existingPlayer.id == 1) continue;
+                        
+                        for (let dy = -1; dy <= 1; dy++) {
+                            for (let dx = -1; dx <= 1; dx++) {
+                                const otherX = existingPlayer.x + dx;
+                                const otherY = existingPlayer.y + dy;
+                                if (otherX == x && otherY == y) {
+                                    willBeOccupied = true;
+                                    break;
+                                }
+                            }
+                            if (willBeOccupied) break;
+                        }
+                        if (willBeOccupied) break;
+                    }
+                    
+                    if (!willBeOccupied) {
+                        validCells.push({x, y});
                     }
                 }
             }
@@ -310,7 +335,7 @@ function attack(entity) {
         }
 
         generateCount(entity.x, entity.y);
-        
+
         return;
     }
 
@@ -323,7 +348,7 @@ function attack(entity) {
         }
     });
     
-    if (map[entity.y][entity.x][0] <= 0) {
+    if (map[entity.y][entity.x][0] <= 1) {
         captureCell(entity, entity.x, entity.y);
     } else {
         map[entity.y][entity.x][0] -= 1;
@@ -353,17 +378,83 @@ function passiveIncome(entity) {
 }
 
 function botActive(entity) {
-    if (entity.id == 1) return;
-    
-    requestAnimationFrame(() => {
-        setInterval(() => {
-            moveEntity(entity, Math.floor(Math.random() * 4));
-            
-            for (let index = 0; index < strength + 1; index++) {
-                attack(entity);
-            }
-        }, 1000);
-    });
+    if (entity.id != 1) {
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                if (entity.captured.some(pos => pos[0] == entity.x && pos[1] == entity.y)) {
+                    let canMove = [];
+                    
+                    if (entity.y > 0) {
+                        if (!entity.captured.some(pos => pos[0] == entity.x && pos[1] == entity.y - 1)) {
+                            if (checkPos(entity.x, entity.y - 1)) {
+                                canMove.push(0);
+                            }
+                        }
+                    }
+                    
+                    if (entity.y < height - 1) {
+                        if (!entity.captured.some(pos => pos[0] == entity.x && pos[1] == entity.y + 1)) {
+                            if (checkPos(entity.x, entity.y + 1)) {
+                                canMove.push(1);
+                            }
+                        }
+                    }
+                    
+                    if (entity.x > 0) {
+                        if (!entity.captured.some(pos => pos[0] == entity.x - 1 && pos[1] == entity.y)) {
+                            if (checkPos(entity.x - 1, entity.y)) {
+                                canMove.push(2);
+                            }
+                        }
+                    }
+                    
+                    if (entity.x < width - 1) {
+                        if (!entity.captured.some(pos => pos[0] == entity.x + 1 && pos[1] == entity.y)) {
+                            if (checkPos(entity.x + 1, entity.y)) {
+                                canMove.push(3);
+                            }
+                        }
+                    }
+                    
+                    if (canMove.length > 0) {
+                        const randomDirection = canMove[Math.floor(Math.random() * canMove.length)];
+                        moveEntity(entity, randomDirection);
+                    } else {
+                        let anyDirection = [];
+                        
+                        if (entity.y > 0) {
+                            anyDirection.push(0);
+                        }
+                        
+                        if (entity.y < height - 1) {
+                            anyDirection.push(1);
+                        }
+                        
+                        if (entity.x > 0) {
+                            anyDirection.push(2);
+                        }
+                        
+                        if (entity.x < width - 1) {
+                            anyDirection.push(3);
+                        }
+                        
+                        if (anyDirection.length > 0) {
+                            const randomDirection = anyDirection[Math.floor(Math.random() * anyDirection.length)];
+                            moveEntity(entity, randomDirection);
+                        }
+                    }
+                } else {
+                    for (let index = 0; index < map[entity.y][entity.x][0] + 1; index++) {
+                        setTimeout(() => {
+                            attack(entity);
+                        }, attackInterval);
+                    }
+                }
+
+                botActive(entity);
+            }, 1000);
+        });
+    }
 }
 
 function generateLeaderboard() {
@@ -473,7 +564,10 @@ document.body.onkeydown = (event) => {
 }
 
 joystick.forEach((element, index) => {
-    element.addEventListener('touchstart', (e) => {
+    let pressTimer;
+    let isPressing = false;
+    
+    const startPress = (e) => {
         e.preventDefault();
         
         if (index == 0) {
@@ -481,29 +575,47 @@ joystick.forEach((element, index) => {
         } else if (index == 1) {
             moveEntity(player, 2);
         } else if (index == 2) {
-            attack(player);
-        } else if (index == 3) {
-            moveEntity(player, 3);
-        } else if (index == 4) {
-            moveEntity(player, 1);
-        }
-    });
+            const cell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
+            cell.classList.add('tap');
 
-    element.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        if (index == 0) {
-            moveEntity(player, 0);
-        } else if (index == 1) {
-            moveEntity(player, 2);
-        } else if (index == 2) {
-            attack(player);
+            isPressing = true;
+
+            pressTimer = setTimeout(() => {
+                if (isPressing) {
+                    attack(player);
+                    attackTimer = setInterval(() => {
+                        if (isPressing) {
+                            attack(player);
+                        }
+                    }, attackInterval);
+                }
+            }, attackInterval);
         } else if (index == 3) {
             moveEntity(player, 3);
         } else if (index == 4) {
             moveEntity(player, 1);
         }
-    });
+    };
+    
+    const endPress = () => {
+        if (index == 2) {
+            const cell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
+            cell.classList.remove('tap');
+
+            clearTimeout(pressTimer);
+            clearInterval(attackTimer);
+
+            isPressing = false;
+        }
+    };
+
+    element.addEventListener('touchstart', startPress);
+    element.addEventListener('mousedown', startPress);
+    
+    element.addEventListener('touchend', endPress);
+    element.addEventListener('touchcancel', endPress);
+    element.addEventListener('mouseup', endPress);
+    element.addEventListener('mouseleave', endPress);
 });
 
 zoomer[0].addEventListener('click', () => {
@@ -580,6 +692,7 @@ function main() {
 
             generateEntity(player);
             generateRadius(player);
+
             centerOffset();
 
             for (let index = 0; index < colors.length - 1; index++) {
