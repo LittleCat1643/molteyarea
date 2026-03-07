@@ -1,9 +1,9 @@
-const canFullscreen = true;
+const canFullscreen = false;
 const canOverlay = true;
 const zoomBorder = [0.5, 5];
 const leaderboardMax = 3;
+const playersLimit = 12;
 
-const colorsOld = [['ff4d6d', 'ffb3c1'], ['0582ca', '00a6fb'], ['2a9134', '5bba6f'], ['ffba08', 'ffe169'], ['7b2cbf', 'c77dff'], ['e85d04', 'faa307']];
 const colors = [['ff0000', 'ff6666'], ['ff7f00', 'ffa64d'], ['ffd700', 'ffe566'], ['32cd32', '98fb98'], ['00bfff', '87cefa'], ['1e90ff', '6ab0ff'], ['8a2be2', 'b47bff'], ['ff69b4', 'ffb6c1'], ['40e0d0', '9fe2df'], ['dc143c', 'ff6b8b'], ['daa520', 'f4c542'], ['9acd32', 'c0e36b'], ['4b0082', '7a4fa0'], ['ff7f50', 'ffa07a'], ['9932cc', 'b96bcf'], ['00ffff', '7fffff'], ['7fff00', 'b2ff66'], ['da70d6', 'e9a0e6'], ['ff4500', 'ff7d4d'], ['00ff7f', '7fffaf'], ['6a5acd', '9285e0'], ['ff8c00', 'ffb347'], ['e75480', 'f291b2'], ['007ff0', '4da6ff']];
 
 const enFirstUsernamesPart = ['Good', 'Bad', 'Happy', 'Sad', 'Big', 'Small', 'Young', 'Old', 'Beautiful', 'Ugly', 'Nice', 'Mean', 'Kind', 'Cruel', 'Clever', 'Stupid', 'Busy', 'Lazy', 'Quiet', 'Noisy', 'Hot', 'Cold', 'Hungry', 'Full', 'Tired', 'Rested', 'Strong', 'Weak', 'Brave', 'Scared', 'Rich', 'Poor', 'Important', 'Unimportant', 'Easy', 'Difficult', 'Interesting', 'Boring', 'Exciting', 'Calming', 'Funny', 'Serious', 'Angry', 'Friendly', 'Polite', 'Rude', 'Clean', 'Dirty', 'New', 'Old', 'Modern', 'Traditional', 'Comfortable', 'Uncomfortable', 'Safe', 'Dangerous', 'Healthy', 'Sick', 'Fast', 'Slow', 'Long', 'Short', 'Deep', 'Shallow', 'High', 'Low', 'Wide', 'Narrow', 'Thick', 'Thin', 'Heavy', 'Light', 'Soft', 'Hard', 'Smooth', 'Rough'];
@@ -18,15 +18,26 @@ const layout = document.querySelector('.layout');
 const leaderboard = document.querySelector('.header > .top > .left > .leaderboard > .content');
 const miniMap = document.querySelector('.header > .top > .right > .map');
 
-const joystick = [document.querySelector('.header > .bottom > .left > .joystick > .top > .button:nth-child(1) > button'), document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(1) > button'), document.querySelector('.header > .bottom > .right > .attack > .button > button'), document.querySelector('.header > .bottom > .left > .joystick > .center > .button:nth-child(3) > button'), document.querySelector('.header > .bottom > .left > .joystick > .bottom > .button:nth-child(1) > button')];
+const joystick = [
+    document.querySelector('.header > .bottom > .left > .joystick > .handlers > .top'),
+    document.querySelector('.header > .bottom > .left > .joystick > .handlers > .bottom'),
+    document.querySelector('.header > .bottom > .right > .attack > .button'),
+    document.querySelector('.header > .bottom > .left > .joystick > .handlers > .right'),
+    document.querySelector('.header > .bottom > .left > .joystick > .handlers > .left')
+];
+
 const zoomer = [document.querySelector('.header > .center > .right > .zoom > .more > button'), document.querySelector('.header > .center > .right > .zoom > .less > button')];
+
+const moveJoystickArea = document.querySelector('.header > .bottom > .left > .joystick > .button');
+const moveJoystick = document.querySelector('.header > .bottom > .left > .joystick > .button > button');
+const attackJoystick = document.querySelector('.header > .bottom > .right > .attack > .button > button');
 
 let width = 50;
 let height = 50;
 let strength = 10;
 
 let attackTimer = null;
-let attackInterval = 500;
+let attackInterval = 300;
 
 let zoom = 3;
 
@@ -570,13 +581,22 @@ joystick.forEach((element, index) => {
     const startPress = (e) => {
         e.preventDefault();
         
-        if (index == 0) {
+        if (index == 0) {  
             moveEntity(player, 0);
+
+            moveJoystickArea.classList.add('move');
+            moveJoystick.classList.add('top');
         } else if (index == 1) {
             moveEntity(player, 2);
+
+            moveJoystickArea.classList.add('move');
+            moveJoystick.classList.add('left');
         } else if (index == 2) {
             const cell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
             cell.classList.add('tap');
+
+            joystick[2].classList.add('tap');
+            attackJoystick.classList.add('tap');
 
             isPressing = true;
 
@@ -587,26 +607,48 @@ joystick.forEach((element, index) => {
                         if (isPressing) {
                             attack(player);
                         }
+
                     }, attackInterval);
                 }
             }, attackInterval);
         } else if (index == 3) {
             moveEntity(player, 3);
+
+            moveJoystickArea.classList.add('move');
+            moveJoystick.classList.add('right');
         } else if (index == 4) {
             moveEntity(player, 1);
+
+            moveJoystickArea.classList.add('move');
+            moveJoystick.classList.add('bottom');
         }
     };
     
     const endPress = () => {
-        if (index == 2) {
+        if (index == 0) {  
+            moveJoystickArea.classList.remove('move');
+            moveJoystick.classList.remove('top');
+        } else if (index == 1) {  
+            moveJoystickArea.classList.remove('move');
+            moveJoystick.classList.remove('left');
+        } else if (index == 2) {
             const cell = document.querySelector(`[data-x="${player.x}"][data-y="${player.y}"]`);
             cell.classList.remove('tap');
+
+            joystick[2].classList.remove('tap');
+            attackJoystick.classList.remove('tap');
 
             clearTimeout(pressTimer);
             clearInterval(attackTimer);
 
             isPressing = false;
-        }
+        } else if (index == 3) {  
+            moveJoystickArea.classList.remove('move');
+            moveJoystick.classList.remove('right');
+        } else if (index == 4) {  
+            moveJoystickArea.classList.remove('move');
+            moveJoystick.classList.remove('bottom');
+        } 
     };
 
     element.addEventListener('touchstart', startPress);
@@ -695,7 +737,7 @@ function main() {
 
             centerOffset();
 
-            for (let index = 0; index < colors.length - 1; index++) {
+            for (let index = 0; index < playersLimit - 1; index++) {
                 createBot();
             }
 
