@@ -1,4 +1,6 @@
 :root {
+    --background-light: #6be1f9;
+    --background-dark: #0acbfa;
     --other-button-main: #778da9;
     --other-button-dark: #415a77;
     --nickname-input-main: #eaeaea;
@@ -7,6 +9,8 @@
     --skins-button-dark: #ff7c42;
     --play-button-main: #66bb6a;
     --play-button-dark: #3a883e;
+    --stats-button-main: #ff4d6d;
+    --stats-button-dark: #c9184a;
     --background-orange: #66331d;
     --background-green: #1f5022;
     --white: #ffffff;
@@ -23,6 +27,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
 }
 
 body {
@@ -54,35 +59,13 @@ button {
 .scenes > div {
     display: none;
     height: 100%;
-    animation: backgroundAnimation 32s ease-in-out infinite;
-    background: linear-gradient(72deg, var(--background-green), var(--black), var(--background-orange));
-    background-size: 200% 200%;
+    background-image: linear-gradient(to right, var(--background-dark) 0%, var(--background-dark) 50%, var(--background-light) 50%, var(--background-light) 100%);
+    background-size: 120px 100%;
+    background-repeat: repeat;
 }
 
 .scenes > .menu {
     display: block;
-}
-
-@keyframes backgroundAnimation {
-    0% {
-        background-position: 0% 100%;
-    }
-    
-    25% {
-        background-position: 50% 50%;
-    }
-    
-    50% {
-        background-position: 100% 0%;
-    }
-    
-    75% {
-        background-position: 50% 50%;
-    }
-    
-    100% {
-        background-position: 0% 100%;
-    }
 }
 
 .scenes > .menu > .ui {
@@ -96,24 +79,28 @@ button {
     width: 100%;
 }
 
-.scenes > .menu > .ui > .logo > h1 {
-    font-family: 'Bitcount Prop Double', system-ui;
-    font-weight: 400;
-    font-size: 96px;
-    margin: 26px 0;
-    color: white;
+.scenes > .menu > .ui > .logo > img {
+    width: 250px;
+    margin: 20px 0;
 }
 
-.scenes > .menu > .ui > .lobby > .top {
+.scenes > .menu > .ui > .lobby {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
-.scenes > .menu > .ui > .lobby > .top > div {
-    margin: 8px 4px;
+.scenes > .menu > .ui > .lobby > div {
+    width: 100%;
+    padding: 0 12px;
 }
 
-.scenes > .menu > .ui > .lobby > .top > .nickname > input {
+.scenes > .menu > .ui > .lobby > .nickname {
+    margin-bottom: 6px;
+}
+
+.scenes > .menu > .ui > .lobby > .nickname > input {
     border-left: none;
     border-right: none;
     border-top: solid 4px var(--nickname-input-main);
@@ -123,15 +110,32 @@ button {
     font-weight: 500;
     font-size: 24px;
     padding: 4px;
-    width: 250px;
+    width: 100%;
 }
 
-.scenes > .menu > .ui > .lobby > .top > .nickname > input::placeholder {
+.scenes > .menu > .ui > .lobby > .nickname > input::placeholder {
     color: var(--black);
 }
 
-.scenes > .menu > .ui > .lobby > .top > .skins > button {
+.scenes > .menu > .ui > .lobby > .buttons > div {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .first {
+    margin-bottom: 6px;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .first > .skins {
+    margin-right: 4px;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .first > .skins > button {
+    display: flex;
+    justify-content: center;
     align-items: center;
     text-transform: uppercase;
     border-left: none;
@@ -142,27 +146,26 @@ button {
     transform: skew(-5deg);
     font-weight: 700;
     font-size: 24px;
-    padding: 4px 32px;
+    padding: 4px 24px;
     letter-spacing: 1px;
 }
 
-.scenes > .menu > .ui > .lobby > .top > .skins > button:hover {
+.scenes > .menu > .ui > .lobby > .buttons > .first > .skins > button:hover {
     transform: scale(0.95) skew(-5deg);
 }
 
-.scenes > .menu > .ui > .lobby > .top > .skins > button > img {
+.scenes > .menu > .ui > .lobby > .buttons > .first > .skins > button > img {
     width: 28px;
-    margin-left: 8px;
+    margin-right: 6px;
 }
 
-.scenes > .menu > .ui > .lobby > .bottom {
+.scenes > .menu > .ui > .lobby > .buttons > .first > .play {
+    margin-left: 4px;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .first > .play > button {
     display: flex;
     justify-content: center;
-    width: 100%;
-}
-
-.scenes > .menu > .ui > .lobby > .bottom > .play > button {
-    display: flex;
     align-items: center;
     text-transform: uppercase;
     border-left: none;
@@ -173,24 +176,54 @@ button {
     transform: skew(-5deg);
     font-weight: 700;
     font-size: 24px;
-    padding: 4px 32px;
+    padding: 4px 24px;
     letter-spacing: 1px;
 }
 
-.scenes > .menu > .ui > .lobby > .bottom > .play > button:hover {
+.scenes > .menu > .ui > .lobby > .buttons > .first > .play > button:hover {
     transform: scale(0.95) skew(-5deg);
 }
 
-.scenes > .menu > .ui > .lobby > .bottom > .play > button > img {
+.scenes > .menu > .ui > .lobby > .buttons > .first > .play > button > img {
     width: 28px;
     margin-left: 8px;
 }
 
-.scenes > .menu > .ui > .lobby > .bottom > .other {
+.scenes > .menu > .ui > .lobby > .buttons > .second > .stats {
+    margin-right: 4px;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .second > .stats > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    border-left: none;
+    border-right: none;
+    border-top: solid 4px var(--stats-button-main);
+    border-bottom: solid 4px var(--stats-button-dark);
+    background: var(--stats-button-main);
+    transform: skew(-5deg);
+    font-weight: 700;
+    font-size: 24px;
+    padding: 4px 24px;
+    letter-spacing: 1px;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .second > .stats > button:hover {
+    transform: scale(0.95) skew(-5deg);
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .second > .stats > button > img {
+    width: 28px;
+    margin-left: 8px;
+}
+
+.scenes > .menu > .ui > .lobby > .buttons > .second > .other {
     display: flex;
 }
 
-.scenes > .menu > .ui > .lobby > .bottom > .other > div > button {
+.scenes > .menu > .ui > .lobby > .buttons > .second > .other > div > button {
     display: flex;
     align-items: center;
     text-transform: uppercase;
@@ -203,14 +236,14 @@ button {
     font-weight: 700;
     font-size: 24px;
     padding: 4px 8px;
-    margin-left: 8px;
+    margin: 0 4px;
 }
 
-.scenes > .menu > .ui > .lobby > .bottom > .other > div > button:hover {
+.scenes > .menu > .ui > .lobby > .buttons > .second > .other > div > button:hover {
     transform: scale(0.95) skew(-5deg);
 }
 
-.scenes > .menu > .ui > .lobby > .bottom > .other > div > button > img {
+.scenes > .menu > .ui > .lobby > .buttons > .second > .other > div > button > img {
     width: 28px;
 }
 
