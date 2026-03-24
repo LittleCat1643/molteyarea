@@ -1,17 +1,22 @@
 :root {
-    --cyan: #48cae4;
-    --dark-cyan: #00b4d8;
+    --other-button-main: #778da9;
+    --other-button-dark: #415a77;
+    --nickname-input-main: #eaeaea;
+    --nickname-input-dark: #b7b7b7;
+    --skins-button-main: #ff9568;
+    --skins-button-dark: #ff7c42;
+    --play-button-main: #66bb6a;
+    --play-button-dark: #3a883e;
+    --background-orange: #66331d;
+    --background-green: #1f5022;
     --white: #ffffff;
-    --light-gray: #dee2e6;
-    --transparent-light-gray: #dee2e664;
-    --light-transparent-black: #21252916;
-    --transparent-black: #21252964;
-    --black: #212529;
+    --black: #000000;
 }
 
 * {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     user-select: none;
+    outline: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -21,135 +26,250 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
-    touch-action: none;
-    background: var(--cyan);
     height: 100vh;
     margin: 0;
     padding: 0;
 }
 
-.scenes > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+h1, h2, h3, h4, h5, h6, p, b, em, input, button, textarea {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.wrapper {
     height: 100%;
     width: 100%;
 }
 
-.scenes > .game > .over > .swipe {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+.scenes {
+    height: 100%;
+}
+
+.scenes > div {
+    display: none;
+    height: 100%;
+    animation: backgroundAnimation 32s ease-in-out infinite;
+    background: linear-gradient(72deg, var(--background-green), var(--black), var(--background-orange));
+    background-size: 200% 200%;
+}
+
+.scenes > .menu {
+    display: block;
+}
+
+@keyframes backgroundAnimation {
+    0% {
+        background-position: 0% 100%;
+    }
+    
+    25% {
+        background-position: 50% 50%;
+    }
+    
+    50% {
+        background-position: 100% 0%;
+    }
+    
+    75% {
+        background-position: 50% 50%;
+    }
+    
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
+.scenes > .menu > .ui {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.scenes > .menu > .ui > div {
     width: 100%;
-    height: 100vh;
-    z-index: 999;
 }
 
-.scenes > .game > .below {
-    position: absolute;
-    transform-origin: center center;
+.scenes > .menu > .ui > .logo > h1 {
+    font-family: 'Bitcount Prop Double', system-ui;
+    font-weight: 400;
+    font-size: 96px;
+    margin: 26px 0;
+    color: white;
 }
 
-.scenes > .game > .below > .field {
-    position: relative;
-    outline: solid 6px var(--dark-cyan);
-}
-
-.scenes > .game > .below > .field > .line {
-    display: flex;
-}
-
-.scenes > .game > .below > .field > .line > .cell {
+.scenes > .menu > .ui > .lobby > .top {
     display: flex;
     justify-content: center;
+}
+
+.scenes > .menu > .ui > .lobby > .top > div {
+    margin: 8px 4px;
+}
+
+.scenes > .menu > .ui > .lobby > .top > .nickname > input {
+    border-left: none;
+    border-right: none;
+    border-top: solid 4px var(--nickname-input-main);
+    border-bottom: solid 4px var(--nickname-input-dark);
+    background: var(--nickname-input-main);
+    transform: skew(-5deg);
+    font-weight: 500;
+    font-size: 24px;
+    padding: 4px;
+    width: 250px;
+}
+
+.scenes > .menu > .ui > .lobby > .top > .nickname > input::placeholder {
+    color: var(--black);
+}
+
+.scenes > .menu > .ui > .lobby > .top > .skins > button {
+    display: flex;
     align-items: center;
-    position: relative;
-    background: var(--light-gray);
-    width: 24px;
-    height: 24px;
-    outline: solid 1px var(--light-transparent-black);
+    text-transform: uppercase;
+    border-left: none;
+    border-right: none;
+    border-top: solid 4px var(--skins-button-main);
+    border-bottom: solid 4px var(--skins-button-dark);
+    background: var(--skins-button-main);
+    transform: skew(-5deg);
+    font-weight: 700;
+    font-size: 24px;
+    padding: 4px 32px;
+    letter-spacing: 1px;
 }
 
-.scenes > .game > .below > .field > .line > .captured {
-    outline: none;
+.scenes > .menu > .ui > .lobby > .top > .skins > button:hover {
+    transform: scale(0.95) skew(-5deg);
 }
 
-.scenes > .game > .below > .field > .line > .flag {
-    transform: scale(1.1);
-    width: 22px;
-    height: 22px;
-    border: solid 1px var(--white);
-    outline: solid 1px var(--black);
-    z-index: 2;
+.scenes > .menu > .ui > .lobby > .top > .skins > button > img {
+    width: 28px;
+    margin-left: 8px;
 }
 
-.scenes > .game > .below > .field > .line > .flag::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50%;
-    background-color: #000000;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 8;
-}
-
-.scenes > .game > .below > .field > .line > .flag::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 25%;
-    height: 25%;
-    background: url('images/flag.png') center / cover no-repeat;
-    pointer-events: none;
-    z-index: 9;
-}
-
-.scenes > .game > .below > .field > .line > .cell > .player {
-    position: relative;
-    width: 12px;
-    height: 12px;
-    border: solid 1px var(--white);
-    outline: solid 1px var(--black);
-    z-index: 10;
-}
-
-.scenes > .game > .below > .field > .line > .cell > .info {
-    position: absolute;
-    white-space: nowrap;
-    transform: translateX(-50%);
-    top: -8px;
-    left: 50%;
-    z-index: 5;
-}
-
-.scenes > .game > .below > .field > .line > .cell > .info > .nickname {
+.scenes > .menu > .ui > .lobby > .bottom {
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 8px;
+    width: 100%;
 }
 
-.scenes > .game > .below > .field > .line > .cell > .info > .nickname > .level {
+.scenes > .menu > .ui > .lobby > .bottom > .play > button {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    border-left: none;
+    border-right: none;
+    border-top: solid 4px var(--play-button-main);
+    border-bottom: solid 4px var(--play-button-dark);
+    background: var(--play-button-main);
+    transform: skew(-5deg);
+    font-weight: 700;
+    font-size: 24px;
+    padding: 4px 32px;
+    letter-spacing: 1px;
+}
+
+.scenes > .menu > .ui > .lobby > .bottom > .play > button:hover {
+    transform: scale(0.95) skew(-5deg);
+}
+
+.scenes > .menu > .ui > .lobby > .bottom > .play > button > img {
+    width: 28px;
+    margin-left: 8px;
+}
+
+.scenes > .menu > .ui > .lobby > .bottom > .other {
+    display: flex;
+}
+
+.scenes > .menu > .ui > .lobby > .bottom > .other > div > button {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    border-left: none;
+    border-right: none;
+    border-top: solid 4px var(--other-button-main);
+    border-bottom: solid 4px var(--other-button-dark);
+    background: var(--other-button-main);
+    transform: skew(-5deg);
+    font-weight: 700;
+    font-size: 24px;
+    padding: 4px 8px;
+    margin-left: 8px;
+}
+
+.scenes > .menu > .ui > .lobby > .bottom > .other > div > button:hover {
+    transform: scale(0.95) skew(-5deg);
+}
+
+.scenes > .menu > .ui > .lobby > .bottom > .other > div > button > img {
+    width: 28px;
+}
+
+.scenes > .info {
+    padding: 12px;
+}
+
+.scenes > .info > .title {
+    border-bottom: solid 2px var(--skins-button-main);
+    margin-bottom: 12px;
+}
+
+.scenes > .info > .title > h1 {
+    font-family: 'Iosevka Charon Mono', monospace;
+    text-transform: uppercase;
+    color: var(--white);
+    font-size: 36px;
+}
+
+.scenes > .info > .content {
+    height: 60vh;
+    overflow-y: scroll;
+}
+
+.scenes > .info > .content > p {
+    color: var(--white);
+    font-size: 18px;
+}
+
+.scenes > .info > .ok {
     display: flex;
     justify-content: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 12px;
+}
+
+.scenes > .info > .ok > button {
+    display: flex;
     align-items: center;
-    background: var(--transparent-black);
-    color: var(--light-gray);
-    font-size: 6px;
-    font-weight: 600;
-    margin-left: 2px;
-    border-radius: 100%;
-    width: 10px;
-    height: 10px;
+    text-transform: uppercase;
+    border-left: none;
+    border-right: none;
+    border-top: solid 4px var(--play-button-main);
+    border-bottom: solid 4px var(--play-button-dark);
+    background: var(--play-button-main);
+    transform: skew(-5deg);
+    font-weight: 700;
+    font-size: 24px;
+    padding: 4px 32px;
+    letter-spacing: 1px;
+}
+
+.scenes > .info > .ok > button:hover {
+    transform: scale(0.95) skew(-5deg);
+}
+
+.scenes > .info > .ok > button > img {
+    width: 28px;
+    margin-left: 8px;
 }

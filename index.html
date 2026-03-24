@@ -2,25 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
     <title>motley.io</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double:wght@100..900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Iosevka+Charon+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="scenes">
-        <div class="game">
-            <div class="over">
-                <div class="ui"></div>
-                <div class="swipe"></div>
+    <div class="wrapper">
+        <div class="scenes">
+            <div class="menu">
+                <div class="ui">
+                    <div class="logo">
+                        <h1>motley.io</h1>
+                    </div>
+                    <div class="lobby">
+                        <div class="top">
+                            <div class="nickname">
+                                <input type="text" autocomplete="off" placeholder="Ваш никнейм..." value="Игрок">
+                            </div>
+                            <div class="skins">
+                                <button>Скины <img src="images/skins.png"></button>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <div class="play">
+                                <button>Играть <img src="images/play.png"></button>
+                            </div>
+                            <div class="other">
+                                <div class="info">
+                                    <button><img src="images/info.png"></button>
+                                </div>
+                                <div class="settings">
+                                    <button><img src="images/settings.png"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="below">
-                <div class="field"></div>
+            <div class="game"></div>
+            <div class="skins"></div>
+            <div class="info">
+                <div class="title">
+                    <h1>Как играть?</h1>
+                </div>
+                <div class="content">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod soluta consectetur accusamus natus maiores aliquid similique quae tenetur qui esse magni cum, incidunt, voluptatibus non praesentium quia fugiat explicabo voluptates.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, inventore sit deserunt similique maiores, beatae non minima iure nemo alias tempora ex? Sunt, voluptatem cum. Autem impedit commodi rem ex.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis vero temporibus et, quisquam, harum quibusdam aspernatur eos dolor eaque sapiente modi aliquid deserunt, vel cupiditate incidunt quod recusandae eum officia?</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo ratione enim expedita suscipit omnis excepturi culpa, optio laboriosam iure cumque totam repudiandae deserunt obcaecati! Est laborum nostrum optio qui natus.</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi qui laudantium libero, labore non, iure voluptatibus repellat maiores laborum rem asperiores maxime dolore ex nobis repellendus, illo nostrum! Totam, maiores!</p>
+                </div>
+                <div class="ok">
+                    <button>Понятно <img src="images/ok.png"></button>
+                </div>
             </div>
+            <div class="settings"></div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="scripts/scenes.js"></script>
+    <script src="scripts/menu.js"></script>
+    <script src="scripts/info.js"></script>
 </body>
 </html>
