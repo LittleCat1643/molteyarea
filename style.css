@@ -1,4 +1,5 @@
 :root {
+    --header-border: #fdcc0c;
     --background-light: #6be1f9;
     --background-dark: #41d1f6;
     --other-button-main: #1ed1fb;
@@ -16,6 +17,10 @@
     --records-button-main: #ff4d6d;
     --records-button-dark: #c9184a;
     --records-button-text: #620d25;
+    --close-button-main: #ff6465;
+    --close-button-dark: #f83939;
+    --close-button-text: #8a1f1f;
+    --settings-dark-transparent: #00000022;
     --white: #ffffff;
     --black: #000000;
 }
@@ -51,7 +56,7 @@ h1, h2, h3, h4, h5, h6, p, b, em, input, button, textarea {
 
 button {
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s ease-in-out;
 }
 
 .wrapper {
@@ -140,7 +145,10 @@ button {
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .skins {
+    background: var(--skins-button-text);
+    transform: skew(-5deg);
     margin-right: 4px;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .skins > button {
@@ -156,16 +164,14 @@ button {
     outline: solid 1px var(--skins-button-text);
     background: var(--skins-button-main);
     color: var(--skins-button-text);
-    transform: skew(-5deg);
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 18px;
     padding: 8px 24px;
-    letter-spacing: 1px;
-    border-radius: 10px 0;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .skins > button:hover {
-    transform: scale(0.95) skew(-5deg);
+    transform: scale(0.9);
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .skins > button > img {
@@ -177,7 +183,10 @@ button {
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .play {
+    background: var(--play-button-text);
+    transform: skew(-5deg);
     margin-left: 4px;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .play > button {
@@ -193,16 +202,14 @@ button {
     outline: solid 1px var(--play-button-text);
     background: var(--play-button-main);
     color: var(--play-button-text);
-    transform: skew(-5deg);
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 18px;
     padding: 8px 24px;
-    letter-spacing: 1px;
-    border-radius: 10px 0;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .play > button:hover {
-    transform: scale(0.95) skew(-5deg);
+    transform: scale(0.9);
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .first > .play > button > img {
@@ -214,7 +221,10 @@ button {
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .records {
+    background: var(--records-button-text);
+    transform: skew(-5deg);
     margin-right: 4px;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .records > button {
@@ -230,16 +240,14 @@ button {
     outline: solid 1px var(--records-button-text);
     background: var(--records-button-main);
     color: var(--records-button-text);
-    transform: skew(-5deg);
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 18px;
     padding: 8px 24px;
-    letter-spacing: 1px;
-    border-radius: 10px 0;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .records > button:hover {
-    transform: scale(0.95) skew(-5deg);
+    transform: scale(0.9);
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .records > button > img {
@@ -256,11 +264,17 @@ button {
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .other > .info {
+    background: var(--other-button-text);
+    transform: skew(-5deg);
     margin-right: 4px;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .other > .settings {
+    background: var(--other-button-text);
+    transform: skew(-5deg);
     margin-left: 4px;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .other > div > button {
@@ -270,22 +284,20 @@ button {
     text-transform: uppercase;
     border-left: none;
     border-right: none;
-    font-family: 'Jost', sans-serif;
     border-top: solid 4px var(--other-button-main);
     border-bottom: solid 4px var(--other-button-dark);
     outline: solid 1px var(--other-button-text);
     background: var(--other-button-main);
     color: var(--other-button-text);
-    transform: skew(-5deg);
     font-weight: 700;
     font-size: 20px;
     padding: 8px 16px;
     letter-spacing: 1px;
-    border-radius: 10px 0;
+    border-radius: 10px;
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .other > div > button:hover {
-    transform: scale(0.95) skew(-5deg);
+    transform: scale(0.9);
 }
 
 .scenes > .menu > .ui > .lobby > .buttons > .second > .other > div > button > img {
@@ -295,62 +307,110 @@ button {
     bottom: 1px;
 }
 
-.scenes > .info {
+.scenes > .settings > .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--other-button-text);
+    border-bottom: solid 6px var(--header-border);
+}
+
+.scenes > .settings > .header > .title > h1 {
+    display: flex;
+    align-items: center;
+    font-family: 'Jost', sans-serif;
+    color: var(--white);
+    font-size: 36px;
+    font-weight: 500;
+}
+
+.scenes > .settings > .header > .title > h1 > img {
+    width: 42px;
+    margin-right: 8px;
+}
+
+.scenes > .settings > .header > .close > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    border: none;
+    outline: solid 2px var(--close-button-main);
+    background: none;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 8px;
+    letter-spacing: 1px;
+    border-radius: 10px;
+}
+
+.scenes > .settings > .header > .close > button > img {
+    width: 28px;
+}
+
+.scenes > .settings > .content > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 12px;
 }
 
-.scenes > .info > .title {
-    border-bottom: solid 2px var(--skins-button-main);
-    margin-bottom: 12px;
+.scenes > .settings > .content > div:nth-child(2n) {
+    background: var(--settings-dark-transparent);
 }
 
-.scenes > .info > .title > h1 {
-    font-family: 'Iosevka Charon Mono', monospace;
-    text-transform: uppercase;
-    color: var(--white);
-    font-size: 36px;
-}
-
-.scenes > .info > .content {
-    height: 60vh;
-    overflow-y: scroll;
-}
-
-.scenes > .info > .content > p {
-    color: var(--white);
-    font-size: 18px;
-}
-
-.scenes > .info > .ok {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding-bottom: 12px;
-}
-
-.scenes > .info > .ok > button {
+.scenes > .settings > .content > div > .sign > h2 {
     display: flex;
     align-items: center;
-    text-transform: uppercase;
-    border-left: none;
-    border-right: none;
-    border-top: solid 4px var(--play-button-main);
-    border-bottom: solid 4px var(--play-button-dark);
-    background: var(--play-button-main);
-    transform: skew(-5deg);
-    font-weight: 700;
     font-size: 24px;
-    padding: 4px 32px;
-    letter-spacing: 1px;
+    font-weight: 600;
 }
 
-.scenes > .info > .ok > button:hover {
-    transform: scale(0.95) skew(-5deg);
+.scenes > .settings > .content > div > .sign > h2 > img {
+    width: 36px;
+    margin-right: 12px;
 }
 
-.scenes > .info > .ok > button > img {
-    width: 28px;
-    margin-left: 8px;
+.scenes > .settings > .content > div > .value > .switch {
+    display: flex;
+    justify-content: flex-start;
+    width: 58px;
+    height: 32px;
+    padding: 6px;
+    border: none;
+    outline: none;
+    background: var(--nickname-input-text);
+    border-radius: 16px;
+    outline: solid 2px var(--black);
+}
+
+.scenes > .settings > .content > div > .value > .switch > .circle {
+    width: 20px;
+    height: 20px;
+    background: var(--nickname-input-main);
+    border-radius: 100%;
+}
+
+.scenes > .settings > .content > div > .value > .on {
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: solid 2px var(--play-button-dark);
+    background: var(--play-button-main);
+}
+
+.scenes > .settings > .content > .language > .value > .choice {
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.scenes > .settings > .content > .language > .value > .choice > img {
+    width: 16px;
+    transform: scale(2.5);
+    outline: solid 1px var(--black);
+    border-radius: 100%;
+    margin-right: 16px;
 }
