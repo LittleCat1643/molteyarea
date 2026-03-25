@@ -2,14 +2,18 @@ let graphics = true;
 let sounds = true;
 let language = 'ru';
 
-const closeButton = document.querySelector('.scenes > .settings > .header > .close > button');
+const settingsTitle = document.querySelector('.scenes > .settings > .header > .title > h1');
+const closeSettingsButton = document.querySelector('.scenes > .settings > .header > .close > button');
 const graphicsSwitch = document.querySelector('.scenes > .settings > .content > .graphics > .value > .switch');
 const soundsSwitch = document.querySelector('.scenes > .settings > .content > .sounds > .value > .switch');
 const languageChoice = document.querySelector('.scenes > .settings > .content > .language > .value > .choice');
+const graphicsSign = document.querySelector('.scenes > .settings > .content > .graphics > .sign > h2');
+const soundsSign = document.querySelector('.scenes > .settings > .content > .sounds > .sign > h2');
+const languageSign = document.querySelector('.scenes > .settings > .content > .language > .sign > h2');
 
 const switchButtons = document.querySelectorAll('.switch');
 
-closeButton.addEventListener('click', () => {
+closeSettingsButton.addEventListener('click', () => {
     switchScene(menuScene);
 });
 
@@ -21,6 +25,8 @@ languageChoice.addEventListener('click', () => {
     }
 
     languageChoice.innerHTML = `<img src="images/flags/${language}.png">`;
+
+    innerTextsAll();
 });
 
 graphicsSwitch.addEventListener('click', () => {
@@ -43,6 +49,7 @@ function editSetting(type, value) {
     switch (type) {
         case 'graphics': 
             graphics = value;
+
             if (graphics) {
                 graphicsSwitch.classList.add('on');
             } else {
@@ -51,6 +58,7 @@ function editSetting(type, value) {
             break;
         case 'sounds': 
             sounds = value;
+
             if (sounds) {
                 soundsSwitch.classList.add('on');
             } else {
@@ -59,6 +67,7 @@ function editSetting(type, value) {
             break;
         case 'language': 
             language = value;
+
             break;
     }
 

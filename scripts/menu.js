@@ -5,6 +5,10 @@ const recordsButton = document.querySelector('.scenes > .menu > .ui > .lobby > .
 const infoButton = document.querySelector('.scenes > .menu > .ui > .lobby > .buttons > .second > .other > .info > button');
 const settingsButton = document.querySelector('.scenes > .menu > .ui > .lobby > .buttons > .second > .other > .settings > button');
 
+recordsButton.addEventListener('click', () => {
+    switchScene(recordsScene);
+});
+
 settingsButton.addEventListener('click', () => {
     switchScene(settingsScene);
 });

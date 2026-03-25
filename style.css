@@ -21,6 +21,7 @@
     --close-button-dark: #f83939;
     --close-button-text: #8a1f1f;
     --settings-dark-transparent: #00000022;
+    --records-dark-transparent: #00000055;
     --white: #ffffff;
     --black: #000000;
 }
@@ -307,16 +308,16 @@ button {
     bottom: 1px;
 }
 
-.scenes > .settings > .header {
+.scenes > div > .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px;
-    background: var(--other-button-text);
+    background: var(--black);
     border-bottom: solid 6px var(--header-border);
 }
 
-.scenes > .settings > .header > .title > h1 {
+.scenes > div > .header > .title > h1 {
     display: flex;
     align-items: center;
     font-family: 'Jost', sans-serif;
@@ -325,12 +326,12 @@ button {
     font-weight: 500;
 }
 
-.scenes > .settings > .header > .title > h1 > img {
+.scenes > div > .header > .title > h1 > img {
     width: 42px;
     margin-right: 8px;
 }
 
-.scenes > .settings > .header > .close > button {
+.scenes > div > .header > .close > button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -345,7 +346,7 @@ button {
     border-radius: 10px;
 }
 
-.scenes > .settings > .header > .close > button > img {
+.scenes > div > .header > .close > button > img {
     width: 28px;
 }
 
@@ -413,4 +414,67 @@ button {
     outline: solid 1px var(--black);
     border-radius: 100%;
     margin-right: 16px;
+}
+
+.scenes > .records > .content > .main {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--header-border);
+    padding: 12px 8px;
+    margin-bottom: 24px;
+}
+
+.scenes > .records > .content > .main > div > img {
+    width: 64px;
+}
+
+.scenes > .records > .content > .main > .center {
+    text-align: center;
+}
+
+.scenes > .records > .content > .main > .center > .title > h3 {
+    font-size: 16px;
+    color: var(--records-dark-transparent);
+    font-weight: 500;
+}
+
+.scenes > .records > .content > .main > .center > .content > h1 {
+    color: var(--black);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.scenes > .records > .content > .other > .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--settings-dark-transparent);
+    margin: 8px;
+    border-radius: 10px 0;
+    transform: skew(-5deg);
+    outline: solid 1px var(--black);
+    border-bottom: solid 3px var(--records-dark-transparent);
+}
+
+.scenes > .records > .content > .other > .item > .sign > h3 {
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--white);
+    background: var(--black);
+    padding: 10px;
+    border-radius: 10px 0 0 0;
+}
+
+.scenes > .records > .content > .other > .item > .value > h4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--header-border);
+    width: 76px;
+    height: 24px;
+    font-size: 14px;
+    border-radius: 10px 0;
+    margin: 8px;
 }
