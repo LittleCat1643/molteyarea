@@ -1,0 +1,135 @@
+:root {
+    --white: #ffffff;
+    --off-white: #fefefe;
+    --platinum: #ededed;
+    --gainsboro: #dcdcdc;
+    --silver-chalice: #bcbcbc;
+    --dim-gray: #ababab;
+    --cotton-candy: #ff8fa3;
+    --pink: #ff758f;
+    --bubblegum: #ff4d6d;
+    --rosewood: #c9184a;
+    --rust: #bc3908;
+    --cafe-noir: #621708;
+    --school-bus: #ffc300;
+    --amber-flame: #ffb700;
+    --orange: #ffaa00;
+    --amber-glow: #ffa200;
+    --malachite: #4ad66d;
+    --jade-green: #2dc653;
+    --medium-jungle: #25a244;
+    --forest-green: #208b3a;
+    --electric-blue: #6be1f9;
+    --sky-blue: #41d1f6;
+    --dodger-blue: #2196f3;
+    --azure: #1e88e5;
+    --shadow-blue: #778da9;
+    --deep-space-sparkle: #415a77;
+    --purple-heart: #7b2cbf;
+    --indigo: #360568;
+    --yankees-blue: #1b263b;
+    --rich-black: #0d1b2a;
+    --black: #000000;
+}
+
+* {
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    outline: solid 2px var(--black);
+    transform: skew(-5deg);
+    border-radius: 8px;
+    transition: 0.1s;
+}
+
+button:active {
+    filter: brightness(110%);
+    transform: scale(0.95) skew(-5deg);
+}
+
+button > b {
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+    transform: skew(5deg);
+    font-weight: 700;
+}
+
+button > img {
+    filter: drop-shadow(-1px -1px 0 var(--black)) drop-shadow(1px -1px 0 var(--black)) drop-shadow(-1px 1px 0 var(--black)) drop-shadow(1px 1px 0 var(--black)) drop-shadow(0px 2px 0 var(--black)) drop-shadow(1px 2px 0 var(--black)) drop-shadow(-1px 2px 0 var(--black));
+    transform: skew(5deg);
+}
+
+.wrapper {
+    height: 100vh;
+}
+
+.scenes {
+    height: 100%;
+}
+
+.scenes > div {
+    height: 100vh;
+    display: none;
+    background-image: linear-gradient(to right, var(--sky-blue) 0%, var(--sky-blue) 50%, var(--electric-blue) 50%, var(--electric-blue) 100%);
+    background-size: 120px 100%;
+    background-repeat: repeat;
+}
+
+.scenes > .home {
+    display: block;
+}
+
+.rank > .bronze {
+    background: var(--rust);
+    border: solid 3px var(--cafe-noir);
+}
+
+.rank > .silver {
+    background: var(--silver-chalice);
+    border: solid 3px var(--dim-gray);
+}
+
+.rank > .gold {
+    background: var(--school-bus);
+    border: solid 3px var(--amber-glow);
+}
+
+.rank > .diamond {
+    background: var(--electric-blue);
+    border: solid 3px var(--sky-blue);
+}
+
+.rank > .mythic {
+    background: var(--purple-heart);
+    border: solid 3px var(--indigo);
+}
+
+.rank > .legendary {
+    background: var(--bubblegum);
+    border: solid 3px var(--rosewood);
+}
+
+.rank > .master {
+    background: var(--jade-green);
+    border: solid 3px var(--medium-jungle);
+}

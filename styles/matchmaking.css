@@ -1,0 +1,91 @@
+.scenes > .matchmaking {
+    text-align: center;
+}
+
+.scenes > .matchmaking > .header {
+    padding: 36px 0;
+    margin-bottom: 16px;
+    background: var(--yankees-blue);
+    border-bottom: solid 3px var(--amber-flame);
+    outline: solid 2px var(--black);
+}
+
+.scenes > .matchmaking > .header > h2 {
+    font-size: 26px;
+    color: var(--white);
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+    font-weight: 600;
+}
+
+.scenes > .matchmaking > .layout > .count > h3 {
+    font-size: 30px;
+    color: var(--white);
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+    font-weight: 700;
+}
+
+.scenes > .matchmaking > .layout > .members {
+    margin-top: 16px;
+    border-top: solid 2px var(--black);
+    border-bottom: solid 1px var(--black);
+}
+
+.scenes > .matchmaking > .layout > .members > .player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: linear-gradient(90deg, #00000022, #00000088);
+    border-bottom: solid 1px var(--black);
+}
+
+.scenes > .matchmaking > .layout > .members > .player:nth-child(2n) {
+    background: linear-gradient(90deg, #00000044, #00000088);
+}
+
+.scenes > .matchmaking > .layout > .members > .player > .nickname {
+    font-size: 18px;
+    color: var(--white);
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+    font-weight: 500;
+}
+
+.scenes > .matchmaking > .layout > .members > .me > .nickname {
+    color: var(--amber-flame);
+    font-weight: 600;
+}
+
+.scenes > .matchmaking > .layout > .members > .player > .rank > .symbol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 32px;
+    height: 32px;
+    outline: solid 1px var(--white);
+}
+
+.scenes > .matchmaking > .layout > .members > .player > .rank > .symbol > b {
+    color: var(--white);
+    font-size: 16px;
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+}
+
+.scenes > .matchmaking > .footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 0;
+    padding: 12px;
+}
+
+.scenes > .matchmaking > .footer > .exit > button {
+    border-top: solid 4px var(--cotton-candy);
+    border-bottom: solid 4px var(--rosewood);
+    background: repeating-linear-gradient(45deg, var(--pink) 0px, var(--pink) 28px, var(--bubblegum) 28px, var(--bubblegum) 56px);
+    background-size: 79px 79px;
+    animation: buttonBackground 2s linear infinite;
+    padding: 6px 30px;
+    font-size: 20px;
+}

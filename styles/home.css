@@ -1,0 +1,159 @@
+.scenes > .home > div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.scenes > .home > .header > div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.scenes > .home > .header > .rank {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    max-width: 500px;
+}
+
+.scenes > .home > .header > .rank > .symbol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    color: var(--white);
+    outline: solid 1px var(--black);
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+    border-radius: 100%;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    z-index: 10;
+}
+
+.scenes > .home > .header > .rank > .bar {
+    transform: skew(-5deg);
+    width: 100%;
+    height: 20px;
+    border: solid 3px var(--white);
+    outline: solid 2px var(--black);
+    background: var(--yankees-blue);
+    border-radius: 6px;
+}
+
+.scenes > .home > .header > .rank > .bar > .progress {
+    width: 0%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg, var(--dodger-blue) 0px, var(--dodger-blue) 20px, var(--azure) 20px, var(--azure) 40px);
+}
+
+.scenes > .home > .header > .logo {
+    margin: 32px 0;
+}
+
+.scenes > .home > .header > .logo > img {
+    height: 104px;
+}
+
+.scenes > .home > .layout > div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.scenes > .home > .layout > .lobby > div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.scenes > .home > .layout > .nickname {
+    margin-bottom: 24px;
+}
+
+.scenes > .home > .layout > .nickname > input {
+    width: 300px;
+    border-top: solid 4px var(--off-white);
+    border-bottom: solid 4px var(--gainsboro);
+    background: var(--platinum);
+    outline: solid 2px var(--black);
+    transform: skew(-5deg);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 24px;
+}
+
+.scenes > .home > .layout > .lobby > .play {
+    margin-bottom: 12px;
+}
+
+.scenes > .home > .layout > .lobby > .play > button {
+    border-top: solid 4px var(--malachite);
+    border-bottom: solid 4px var(--forest-green);
+    background: repeating-linear-gradient(45deg, var(--jade-green) 0px, var(--jade-green) 28px, var(--medium-jungle) 28px, var(--medium-jungle) 56px);
+    background-size: 79px 79px;
+    animation: buttonBackground 2s linear infinite;
+    padding: 8px 64px;
+    font-size: 24px;
+}
+
+.scenes > .home > .layout > .lobby > .other > .skins {
+    margin-right: 6px;
+}
+
+.scenes > .home > .layout > .lobby > .other > .skins > button {
+    border-top: solid 4px var(--school-bus);
+    border-bottom: solid 4px var(--amber-glow);
+    background: repeating-linear-gradient(45deg, var(--amber-flame) 0px, var(--amber-flame) 28px, var(--orange) 28px, var(--orange) 56px);
+    background-size: 79px 79px;
+    animation: buttonBackground 2s linear infinite;
+    padding: 6px 30px;
+    font-size: 20px;
+}
+
+.scenes > .home > .layout > .lobby > .other > .records {
+    margin-left: 6px;
+}
+
+.scenes > .home > .layout > .lobby > .other > .records > button {
+    border-top: solid 4px var(--cotton-candy);
+    border-bottom: solid 4px var(--rosewood);
+    background: repeating-linear-gradient(45deg, var(--pink) 0px, var(--pink) 28px, var(--bubblegum) 28px, var(--bubblegum) 56px);
+    background-size: 79px 79px;
+    animation: buttonBackground 2s linear infinite;
+    padding: 6px 30px;
+    font-size: 20px;
+}
+
+.scenes > .home > .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    padding: 12px;
+}
+
+.scenes > .home > .footer > div > button {
+    border-top: solid 4px var(--shadow-blue);
+    border-bottom: solid 4px var(--rich-black);
+    background: repeating-linear-gradient(45deg, var(--deep-space-sparkle) 0px, var(--deep-space-sparkle) 28px, var(--yankees-blue) 28px, var(--yankees-blue) 56px);
+    background-size: 79px 79px;
+    animation: buttonBackground 2s linear infinite;
+    transform: none;
+    padding: 12px 16px;
+    border-radius: 100%;
+}
+
+.scenes > .home > .footer > div > button:active {
+    filter: brightness(110%);
+    transform: scale(0.95);
+}
+
+.scenes > .home > .footer > div > button > img {
+    transform: none;
+    width: 48px;
+}

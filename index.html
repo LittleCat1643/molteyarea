@@ -10,178 +10,82 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Iosevka+Charon+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/common.css">
+    <link rel="stylesheet" href="styles/keyframes.css">
+    <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/matchmaking.css">
 </head>
 <body>
     <div class="wrapper">
         <div class="scenes">
-            <div class="menu">
-                <div class="ui">
+            <div class="home">
+                <div class="header">
+                    <div class="rank">
+                        <div class="bar">
+                            <div class="progress"></div>
+                        </div>
+                    </div>
                     <div class="logo">
                         <img src="images/logo.png">
                     </div>
+                </div>
+                <div class="layout">
+                    <div class="nickname">
+                        <input type="text" placeholder="Ваш никнейм..." value="Игрок">
+                    </div>
                     <div class="lobby">
-                        <div class="nickname">
-                            <input type="text" autocomplete="off" placeholder="Ваш никнейм..." value="Игрок">
+                        <div class="play">
+                            <button><b>Играть</b></button>
                         </div>
-                        <div class="buttons">
-                            <div class="first">
-                                <div class="skins">
-                                    <button></button>
-                                </div>
-                                <div class="play">
-                                    <button></button>
-                                </div>
+                        <div class="other">
+                            <div class="skins">
+                                <button><b>Скины</b></button>
                             </div>
-                            <div class="second">
-                                <div class="records">
-                                    <button></button>
-                                </div>
-                                <div class="other">
-                                    <div class="info">
-                                        <button><img src="images/info.png"></button>
-                                    </div>
-                                    <div class="settings">
-                                        <button><img src="images/settings.png"></button>
-                                    </div>
-                                </div>
+                            <div class="records">
+                                <button><b>Рекорды</b></button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="footer">
+                    <div class="faq">
+                        <button>
+                            <img src="images/faq.png">
+                        </button>
+                    </div>
+                    <div class="settings">
+                        <button>
+                            <img src="images/settings.png">
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="skins"></div>
+            <div class="matchmaking">
+                <div class="header">
+                    <h2>Подбор противников...</h2>
+                </div>
+                <div class="layout">
+                    <div class="count">
+                        <h3><span>0</span> из 10</h3>
+                    </div>
+                    <div class="members"></div>
+                </div>
+                <div class="footer">
+                    <div class="exit">
+                        <button><b>Выйти</b></button>
+                    </div>
+                </div>
+            </div>
             <div class="game"></div>
-            <div class="records">
-                <div class="header">
-                    <div class="title">
-                        <h1></h1>
-                    </div>
-                    <div class="close">
-                        <button><img src="images/close.png"></button>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="main">
-                        <div class="left">
-                            <img src="images/record.png">
-                        </div>
-                        <div class="center">
-                            <div class="title">
-                                <h3></h3>
-                            </div>
-                            <div class="content">
-                                <h1>235,352</h1>
-                            </div>
-                        </div>
-                        <div class="left">
-                            <img src="images/record.png">
-                        </div>
-                    </div>
-                    <div class="other">
-                        <div class="item">
-                            <div class="sign">
-                                <h3></h3>
-                            </div>
-                            <div class="value">
-                                <h4>3,901</h4>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="sign">
-                                <h3></h3>
-                            </div>
-                            <div class="value">
-                                <h4>785,056</h4>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="sign">
-                                <h3></h3>
-                            </div>
-                            <div class="value">
-                                <h4>2500</h4>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="sign">
-                                <h3></h3>
-                            </div>
-                            <div class="value">
-                                <h4>4,097</h4>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="sign">
-                                <h3></h3>
-                            </div>
-                            <div class="value">
-                                <h4>10</h4>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="sign">
-                                <h3></h3>
-                            </div>
-                            <div class="value">
-                                <h4>16/16</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="info"></div>
-            <div class="settings">
-                <div class="header">
-                    <div class="title">
-                        <h1></h1>
-                    </div>
-                    <div class="close">
-                        <button><img src="images/close.png"></button>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="graphics">
-                        <div class="sign">
-                            <h2></h2>
-                        </div>
-                        <div class="value">
-                            <button class="switch">
-                                <div class="circle"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="sounds">
-                        <div class="sign">
-                            <h2></h2>
-                        </div>
-                        <div class="value">
-                            <button class="switch">
-                                <div class="circle"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="language">
-                        <div class="sign">
-                            <h2></h2>
-                        </div>
-                        <div class="value">
-                            <button class="choice"></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
+    <script src="scripts/player.js"></script>
     <script src="scripts/scenes.js"></script>
-    <script src="scripts/menu.js"></script>
-    <script src="scripts/records.js"></script>
-    <script src="scripts/settings.js"></script>
-    <script src="scripts/language.js"></script>
+    <script src="scripts/home.js"></script>
+    <script src="scripts/matchmaking.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>
