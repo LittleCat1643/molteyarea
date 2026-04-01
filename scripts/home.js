@@ -6,3 +6,7 @@ playButton.addEventListener('click', () => {
     switchScene(matchmakingScene);
     startMatchmaking();
 });
+
+rankSymbol.addEventListener('click', () => {
+    xpUp(125);
+});

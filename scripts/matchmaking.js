@@ -23,7 +23,6 @@ let timeouts = [];
 
 exitButton.addEventListener('click', () => {
     switchScene(homeScene);
-    xpUp(150);
     stopMatchmaking();
 });
 
@@ -60,7 +59,7 @@ function generateUsername() {
 }
 
 function generatePlayer() {
-    return [generateUsername(), Math.floor(xp + (Math.random() < 0.5 ? -(Math.floor(Math.random() * xp) / 2) : (Math.floor(Math.random() * xp) / 2)))];
+    return [generateUsername(), Math.floor(xp + (Math.random() < 0.5 ? -(Math.floor(Math.random() * xp) / 3) : (Math.floor(Math.random() * xp) / 2)))];
 }
 
 function pushPlayer(nickname, xp, me) {
@@ -107,6 +106,7 @@ function startMatchmaking() {
         pushPlayer(players[index][0], players[index][1], false);
     }
 
+    players.push(['Игрок', xp]);
     pushPlayer('Игрок', xp, true);
 
     for (let index = playersCount; index < 10; index++) {
@@ -119,11 +119,24 @@ function startMatchmaking() {
             playersElement.textContent = playersCount;
 
             pushPlayer(player[0], player[1], false);
-        }, Math.floor(Math.random() * 10000) + 1 * timeoutCount);
+        }, Math.floor(Math.random() * 10000) + 1 * timeoutCount * Math.floor(xp / 250));
 
         timeouts.push(timeoutId);
         timeoutCount += 1;
     }
+
+    const waiting = setInterval(() => {
+        if (players.length >= 10) {
+            exitButton.classList.add('disabled');
+            clearInterval(waiting);
+
+            setTimeout(() => {
+                switchScene(loadingScene);
+                stopMatchmaking();
+                startLoading(players);
+            }, 1500);
+        }
+    });
 }
 
 function stopMatchmaking() {

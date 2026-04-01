@@ -33,7 +33,7 @@
 }
 
 * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Rubik', sans-serif;
     user-select: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -99,37 +99,37 @@ button > img {
     display: block;
 }
 
+.rank > .symbol {
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    filter: drop-shadow(-1px -1px 0 var(--black)) drop-shadow(1px -1px 0 var(--black)) drop-shadow(-1px 1px 0 var(--black)) drop-shadow(1px 1px 0 var(--black));
+}
+
 .rank > .bronze {
-    background: var(--rust);
-    border: solid 3px var(--cafe-noir);
+    background: url('../images/ranks/bronze.png');
 }
 
 .rank > .silver {
-    background: var(--silver-chalice);
-    border: solid 3px var(--dim-gray);
+    background: url('../images/ranks/silver.png');
 }
 
 .rank > .gold {
-    background: var(--school-bus);
-    border: solid 3px var(--amber-glow);
+    background: url('../images/ranks/gold.png');
 }
 
 .rank > .diamond {
-    background: var(--electric-blue);
-    border: solid 3px var(--sky-blue);
+    background: url('../images/ranks/diamond.png');
 }
 
 .rank > .mythic {
-    background: var(--purple-heart);
-    border: solid 3px var(--indigo);
+    background: url('../images/ranks/mythic.png');
 }
 
 .rank > .legendary {
-    background: var(--bubblegum);
-    border: solid 3px var(--rosewood);
+    background: url('../images/ranks/legendary.png');
 }
 
 .rank > .master {
-    background: var(--jade-green);
-    border: solid 3px var(--medium-jungle);
+    background: url('../images/ranks/master.png');
 }

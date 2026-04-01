@@ -11,9 +11,13 @@ function getRankSymbol(points) {
     const getRomanNumeral = n => ['I', 'II', 'III', 'IV', 'V'][n % 5];
 
     symbolElement.classList.add('symbol');
-    symbolElement.classList.add(getRank(points));
-    
-    romanElement.textContent = getRomanNumeral(points);
+
+    if (getRank(points) === undefined) {
+        symbolElement.classList.add('master');
+    } else {
+        symbolElement.classList.add(getRank(points));
+        romanElement.textContent = getRomanNumeral(points);
+    }
 
     symbolElement.appendChild(romanElement);
 

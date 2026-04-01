@@ -26,17 +26,16 @@
 
 .scenes > .matchmaking > .layout > .members {
     margin-top: 16px;
-    border-top: solid 2px var(--black);
-    border-bottom: solid 1px var(--black);
+    max-height: 50vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .scenes > .matchmaking > .layout > .members > .player {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px;
     background: linear-gradient(90deg, #00000022, #00000088);
-    border-bottom: solid 1px var(--black);
 }
 
 .scenes > .matchmaking > .layout > .members > .player:nth-child(2n) {
@@ -46,8 +45,9 @@
 .scenes > .matchmaking > .layout > .members > .player > .nickname {
     font-size: 18px;
     color: var(--white);
-    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px  3px 0 var(--black), 1px  3px 0 var(--black), -1px  3px 0 var(--black);
+    text-shadow: -1px -1px 0 var(--black), 1px -1px 0 var(--black), -1px  1px 0 var(--black), 1px  1px 0 var(--black), 0px 2px 0 var(--black), 1px 2px 0 var(--black), -1px 2px 0 var(--black);
     font-weight: 500;
+    padding: 8px;
 }
 
 .scenes > .matchmaking > .layout > .members > .me > .nickname {
@@ -55,14 +55,22 @@
     font-weight: 600;
 }
 
+.scenes > .matchmaking > .layout > .members > .player > .rank {
+    background: var(--black);
+    padding: 8px 16px;
+    transform: skew(-10deg);
+    position: relative;
+    left: 4px;
+}
+
 .scenes > .matchmaking > .layout > .members > .player > .rank > .symbol {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 100%;
-    width: 32px;
-    height: 32px;
-    outline: solid 1px var(--white);
+    width: 36px;
+    height: 36px;
+    transform: skew(10deg);
 }
 
 .scenes > .matchmaking > .layout > .members > .player > .rank > .symbol > b {
@@ -88,4 +96,12 @@
     animation: buttonBackground 2s linear infinite;
     padding: 6px 30px;
     font-size: 20px;
+}
+
+.scenes > .matchmaking > .footer > .exit > .disabled {
+    border-top: solid 4px var(--shadow-blue);
+    border-bottom: solid 4px var(--rich-black);
+    background: repeating-linear-gradient(45deg, var(--deep-space-sparkle) 0px, var(--deep-space-sparkle) 28px, var(--yankees-blue) 28px, var(--yankees-blue) 56px);
+    background-size: 79px 79px;
+    animation: buttonBackground 2s linear infinite;
 }

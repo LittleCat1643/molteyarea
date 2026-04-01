@@ -1,5 +1,6 @@
 const homeScene = document.querySelector('.scenes > .home');
 const matchmakingScene = document.querySelector('.scenes > .matchmaking');
+const loadingScene = document.querySelector('.scenes > .loading');
 const gameScene = document.querySelector('.scenes > .game');
 
 let currentScene = homeScene;
